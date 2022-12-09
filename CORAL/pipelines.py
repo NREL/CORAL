@@ -12,7 +12,7 @@ import pandas as pd
 from ORBIT import load_config
 
 
-class Pipeline:
+class FixedPipeline:
     """Base class for modeling offshore wind project pipelines."""
 
     def __init__(
@@ -23,7 +23,7 @@ class Pipeline:
         enforce_feeders=False,
     ):
         """
-        Creates an instance of `Pipeline`.
+        Creates an instance of `FixedPipeline`.
 
         Parameters
         ----------
