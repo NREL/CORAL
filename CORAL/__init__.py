@@ -7,3 +7,6 @@ __email__ = "jake.nunemaker@nrel.gov"
 from .library import SharedLibrary
 from .manager import GlobalManager
 from .pipelines import FixedPipeline, FloatingPipeline
+
+from . import _version
+__version__ = _version.get_versions()['version']
