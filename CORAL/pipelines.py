@@ -12,8 +12,32 @@ import pandas as pd
 from ORBIT import load_config
 
 
-class FixedPipeline:
+class BasePipeline:
     """Base class for modeling offshore wind project pipelines."""
+
+    def append_num_turbines(self):
+        """
+        Append the number of turbines if missing. Calculated with project and
+        turbine capacity.
+        """
+
+        if "num_turbines" not in self.projects:
+            self.projects["_cap"] = self.projects["turbine"].apply(
+                lambda x: float(re.search(r"\d+", x).group(0))
+            )
+            self.projects["num_turbines"] = (
+                self.projects["capacity"] / self.projects["_cap"]
+            )
+            self.projects["num_turbines"] = self.projects[
+                "num_turbines"
+            ].apply(lambda x: int(np.ceil(x)))
+
+
+class FixedPipeline(BasePipeline):
+    """
+    Class for generating offshore wind project pipelines for fixed bottom East
+    Coast projects.
+    """
 
     def __init__(
         self,
@@ -45,25 +69,8 @@ class FixedPipeline:
 
         self.configs = self.build_configs()
 
-    def append_num_turbines(self):
-        """
-        Append the number of turbines if missing. Calculated with project and
-        turbine capacity.
-        """
-
-        if "num_turbines" not in self.projects:
-            self.projects["_cap"] = self.projects["turbine"].apply(
-                lambda x: float(re.search(r"\d+", x).group(0))
-            )
-            self.projects["num_turbines"] = (
-                self.projects["capacity"] / self.projects["_cap"]
-            )
-            self.projects["num_turbines"] = self.projects[
-                "num_turbines"
-            ].apply(lambda x: int(np.ceil(x)))
-
     def build_configs(self):
-        """Iterate through projects in `self.projects` and build ORBIT configs."""
+        """Iterate through `self.projects` and build ORBIT configs."""
 
         configs = []
         for _, data in self.projects.iterrows():
@@ -154,5 +161,107 @@ class FixedPipeline:
 
         else:
             raise TypeError(f"Substructure '{substructure}' not supported.")
+
+        return config
+
+
+class FloatingPipeline(BasePipeline):
+    """
+    Class for generating offshore wind project pipelines for floating West
+    Coast projects.
+    """
+
+    def __init__(self, projects_fp, base_config, regional_ports=False):
+        """
+        Creates an instance of `FixedPipeline`.
+
+        Parameters
+        ----------
+        projects_fp : str
+            Filepath
+        base_config : str
+            Filepath
+        regional_ports : bool (optional)
+            Toggle for regional ports or specific ports.
+        """
+
+        self.projects = pd.read_csv(projects_fp, parse_dates=["start_date"])
+        self.append_num_turbines()
+        self.base = load_config(base_config)
+        self.regional_ports = regional_ports
+
+        self.configs = self.build_configs()
+
+    def build_configs(self):
+        """Iterate through `self.projects` and build ORBIT configs."""
+
+        configs = []
+        for _, data in self.projects.iterrows():
+
+            config = deepcopy(self.base)
+            config["project_name"] = data["name"]
+            config["project_start"] = data["start_date"]
+
+            config["turbine"] = data["turbine"]
+            config["plant"]["num_turbines"] = data["num_turbines"]
+
+            config["site"]["depth"] = data["depth"]
+            config["site"]["distance_to_landfall"] = data["distance_to_shore"]
+            # Distance calculation?
+
+            if self.regional_ports:
+                config["port"] = ":".join(
+                    ["_shared_pool_", data["port_region"]]
+                )
+                # TODO: Check for NaNs in both cases
+
+            else:
+                config["port"] = ":".join(
+                    ["_shared_pool_", data["associated_port"]]
+                )
+
+            # Different install strategies?
+            config = self.add_substructure_specific_config(
+                config, data["substructure"]
+            )
+
+            configs.append(config)
+
+        return configs
+
+    def add_substructure_specific_config(self, config, sub_type):
+
+        if sub_type == "semisub":
+
+            # Design Phases
+            config["design_phases"] += [
+                "SemiSubmersibleDesign",
+                "MooringSystemDesign",
+            ]
+
+            # Install Phases
+            config["install_phases"]["MooringSystemInstallation"] = 0
+            config["install_phases"]["MooredSubInstallation"] = 0
+
+            # Vessels
+            config.update(
+                {
+                    "MooringSystemInstallation": {
+                        "mooring_install_vessel": "_shared_pool_:example_support_vessel"
+                    }
+                }
+            )
+
+            config.update(
+                {
+                    "MooredSubInstallation": {
+                        "support_vessel": "_shared_pool_:example_support_vessel",
+                        "towing_vessel": "_shared_pool_:example_towing_vessel",
+                    }
+                }
+            )
+
+        else:
+            raise TypeError(f"Substructure type '{sub_type}' not supported.")
 
         return config
