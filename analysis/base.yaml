@@ -1,0 +1,57 @@
+site:
+  #mean_windspeed: 9
+  distance: 50
+plant:
+  layout: grid
+  row_spacing: 7
+  substation_distance: 1
+  turbine_spacing: 7
+landfall:
+  interconnection_distance: 3
+  trench_length: 2
+# Vessels
+array_cable_install_vessel: example_cable_lay_vessel
+export_cable_install_vessel: example_cable_lay_vessel
+export_cable_bury_vessel: example_cable_lay_vessel
+oss_install_vessel: floating_heavy_lift_vessel
+spi_vessel: example_scour_protection_vessel
+towing_vessel_groups:
+    towing_vessels: 2
+    station_keeping_vessels: 3
+# Port
+port:
+    monthly_rate: 2000000.0
+    sub_assembly_lines: 1 # how many you can produce in parallel
+    turbine_assembly_cranes: 1  # has to change same number as sub_assembly_lines.
+    sub_storage: 2
+# Module Specific
+
+substructure:
+  takt_time: 168 
+  unit_cost: 11757583 # USD, IEA VolutrnUS Reference Hull. Output from a run by Garret , Wisdem. 19 Aug 2022.  
+OffshoreSubstationInstallation:
+  feeder: example_heavy_feeder
+  num_feeders: 1
+  
+array_system_design:
+  cables:
+  - XLPE_185mm_66kV 
+  - XLPE_630mm_66kV 
+  
+export_system_design:
+  cables: XLPE_1000mm_220kV
+  percent_added_length: 0.0
+  
+mooring_system_design:
+    num_lines: 3 # int
+    anchor_type: "Drag Embedment" # Maybe change this to semi-taut mooring line with a suction pile anchor.
+    
+# Configured Phases
+design_phases:
+- ArraySystemDesign
+- ExportSystemDesign
+- OffshoreSubstationDesign
+install_phases:
+  ArrayCableInstallation: 0
+  ExportCableInstallation: 0   # Indexed by OSS Install
+  OffshoreSubstationInstallation: 0
