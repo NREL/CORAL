@@ -7,12 +7,13 @@ import matplotlib.pyplot as plt
 import datetime as dt
 initialize_library("library")
 
-from helpers import allocations
+from helpers import allocations, future_allocations
 from plot_routines import plot_gantt
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
-scenarios = ['baseline', 'expanded']
+# scenarios = ['baseline', 'expanded']
+scenarios = ['test']
 base = "base.yaml"
 library_path = "library"
 savedir = "results"
@@ -22,6 +23,15 @@ if __name__ == '__main__':
     for s in scenarios:
         pipeline = FloatingPipeline(projects, base, sheet_name=s)
         manager = GlobalManager(pipeline.configs, allocations[s], library_path=library_path)
+
+        # Check (and add) any port or vessel resources that are not online at the start of the simulatino
+        for s_fa,v in future_allocations.items():
+            if s_fa == s:
+                for vi in v:
+                    manager.add_future_resources(vi[0], vi[1], vi[2])
+
+
+
         manager.run()
 
         # Plot and save results
