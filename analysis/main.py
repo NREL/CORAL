@@ -2,6 +2,7 @@ import os
 import pandas as pd
 
 from CORAL import FloatingPipeline, GlobalManager
+from CORAL.utils import get_installed_capacity_by
 from ORBIT.core.library import initialize_library
 import matplotlib.pyplot as plt
 import datetime as dt
@@ -12,7 +13,7 @@ from plot_routines import plot_gantt
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
-# scenarios = ['baseline', 'expanded']
+# scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA', 'Expanded-all-ports']
 scenarios = ['test']
 base = "base.yaml"
 library_path = "library"
@@ -30,16 +31,17 @@ if __name__ == '__main__':
                 for vi in v:
                     manager.add_future_resources(vi[0], vi[1], vi[2])
 
-
-
         manager.run()
 
-        # Plot and save results
+        # Plot and save results, assign ports to projects
         df = pd.DataFrame(manager.logs).iloc[::-1]
         df = df.reset_index(drop=True).reset_index()
 
-        port_map = pipeline.projects[["name", "associated_port"]].set_index("name").to_dict()['associated_port']
+        port_map = pipeline.projects[["name", "associated_port", "capacity"]].set_index("name").to_dict()['associated_port']
         df['port'] = [port_map[name] for name in df['name']]
+
+        capacity_map = pipeline.projects[["name", "capacity"]].set_index("name").to_dict()['capacity']
+        df['capacity'] = [capacity_map[name] for name in df['name']]
 
         # savefig = savedir + '/s' + '_gantt'
         filename = str(s) + '_gantt'
