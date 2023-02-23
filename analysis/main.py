@@ -18,11 +18,15 @@ scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA
 # scenarios = ['Baseline-limited-ports']
 base = "base.yaml"
 library_path = "library"
+weather_path = "library/weather/humboldt_weather_2010_2018.csv"
 savedir = "results"
 
 writer = pd.ExcelWriter("results/cumulative-capacity.xlsx")
 
 if __name__ == '__main__':
+
+    weather = pd.read_csv(weather_path, parse_dates=["datetime"]).set_index("datetime")
+
     for s in scenarios:
         pipeline = FloatingPipeline(projects, base, sheet_name=s)
         manager = GlobalManager(pipeline.configs, allocations[s], library_path=library_path)
