@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 
 from CORAL import FloatingPipeline, GlobalManager
 from CORAL.utils import get_installed_capacity_by
@@ -9,16 +10,18 @@ import datetime as dt
 initialize_library("library")
 
 from helpers import allocations, future_allocations
-from plot_routines import plot_gantt
+from plot_routines import plot_gantt, plot_throughput
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
-# scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA', 'Expanded-all-ports']
-scenarios = ['test']
+#scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Expanded-all-ports', 'Baseline-Central-CA']
+scenarios = ['Baseline-limited-ports', 'Baseline-South-CA']
+#scenarios = ['Baseline-limited-ports']
 base = "base.yaml"
 library_path = "library"
 savedir = "results"
 
+writer = pd.ExcelWriter("results/cumulative-capacity.xlsx")
 
 if __name__ == '__main__':
     for s in scenarios:
@@ -47,3 +50,53 @@ if __name__ == '__main__':
         filename = str(s) + '_gantt'
         savefig = os.path.join(os.getcwd(), savedir, filename)
         plot_gantt(df, manager, fname=savefig)
+
+        # create a .csv file with cummulative installed capacities
+        df['finish-year'] = pd.DatetimeIndex(df['Date Finished']).year
+
+        minyear = df['finish-year'].min()
+        maxyear = df['finish-year'].max()
+        all_years = list(range(minyear, maxyear+1))
+        annual_cap = []
+        for year in all_years:
+            installed_capacity = get_installed_capacity_by(df, year)
+            annual_cap.append(installed_capacity)
+        caps = pd.DataFrame(list(zip(all_years, annual_cap)), columns =['Year', 'Cummulative Installed Capacity'])
+        caps.to_excel(writer, sheet_name=str(s), index=False)
+
+        # Annual throughput
+        res = []
+
+        for _, project in df.iterrows():
+
+            if project["Date Finished"].year == project["Date Started"].year:
+                res.append((project["Date Finished"].year, project["port"], project["capacity"]))
+
+            else:
+
+                total = project["Date Finished"].date() - project["Date Started"].date()
+                for year in np.arange(project["Date Started"].year, project["Date Finished"].year + 1):
+                    if year == project["Date Started"].year:
+                        perc = (dt.date(year + 1, 1, 1) - project["Date Started"].date()) / total
+
+                    elif year == project["Date Finished"].year:
+                        perc = (project["Date Finished"].date() - dt.date(year, 1, 1)) / total
+
+                    else:
+                        perc = (dt.date(year + 1, 1, 1) - dt.date(year, 1, 1)) / total
+
+                    res.append((year, project["port"], perc * project["capacity"]))
+
+        throughput = pd.DataFrame(res, columns=["year", "port", "capacity"]).pivot_table(
+            index=["year"],
+            columns=["port"],
+            aggfunc="sum",
+            fill_value=0.
+        )["capacity"]
+
+        # Plot throughput
+        filename_thp = str(s) + '_throughput'
+        savefig = os.path.join(os.getcwd(), savedir, filename_thp)
+        plot_throughput(throughput, fname=savefig)
+
+writer.close()

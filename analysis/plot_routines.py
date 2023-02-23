@@ -6,6 +6,9 @@ import matplotlib.patches as mpatches
 import os
 import datetime as dt
 
+from CORAL.utils import get_installed_capacity_by
+
+
 def mysave(fig, froot, mode='png'):
     assert mode in ['png', 'eps', 'pdf', 'all']
     fileName, fileExtension = os.path.splitext(froot)
@@ -124,17 +127,51 @@ def plot_gantt(df, manager, fname=None):
     df["Date Started"].plot(kind="barh", color="#e9e9e9", ax=ax, zorder=4, label="Project Delay", hatch="////", linewidth=0.5)
     df["Date Initialized"].plot(kind='barh', ax=ax, zorder=4, label="__nolabel__", color='w')
 
+
     # Plot formatting
     ax.set_xlabel("")
     ax.set_ylabel("")
     _ = ax.set_yticklabels(df['name'])
+
     plt.yticks(fontsize=6)
+    plt.plot((0, 0), (0, 30), scaley = False)
     ax.legend()
-    ax.set_xlim(manager._start - dt.timedelta(days=30), dt.date(2050, 6, 1) + dt.timedelta(days=30))
+    ax.set_xlim(manager._start - dt.timedelta(days=30), dt.date(2060, 6, 1) + dt.timedelta(days=30))
+
+    ax.axvline(dt.date(2031, 1, 1), lw=0.5, ls="--", color="#6400D3", zorder=6)
+    installed_capacity_31 = get_installed_capacity_by(df, 2031)
+    ax.text(x=dt.date(2051, 1, 1), y=20, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW", fontsize=20, color="#6400D3")
+
+    ax.axvline(dt.date(2046, 1, 1), lw=0.5, ls="--", color="#008080", zorder=6)
+    installed_capacity_46 = get_installed_capacity_by(df, 2046)
+    ax.text(x=dt.date(2051, 1, 1), y=15, s=f"Capacity installed \nby end of 2046: \n{installed_capacity_46/1000:,.3} GW", fontsize=20, color="#008080")
 
     fig.subplots_adjust(left=0.25)
+
 
     if fname is not None:
         myformat(ax)
         mysave(fig, fname)
         plt.close()
+
+def plot_throughput(throughput, fname=None):
+    fig, ax = initFigAxis()
+
+    throughput.plot.bar(ax=ax, width=0.75)
+
+    ax.set_ylim(0, 2000)
+
+    ax.set_ylabel("Annual Capacity Throughput (MW)")
+    ax.set_xlabel("")
+
+    plt.xticks(rotation=0, fontsize=6)
+    plt.yticks(fontsize=6)
+
+    ax.legend(fontsize=6, ncol=5)
+
+    if fname is not None:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()
+    #fname_t = 'results/throughput_'+str(s)+'.png'
+    #fig.savefig(fname_t, dpi=300)
