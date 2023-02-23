@@ -14,12 +14,7 @@ towing_vessel_groups:
   station_keeping_vessels: 1
   towing_vessels: 2
   num_groups: 3
-# Port
-port:
-    monthly_rate: 2000000.0
-    sub_assembly_lines: 1 # how many you can produce in parallel
-    turbine_assembly_cranes: 1  # has to change same number as sub_assembly_lines.
-    sub_storage: 2
+# Port characteristics: define in individual port YAMLs
 
 # Module Specific
 substructure:
