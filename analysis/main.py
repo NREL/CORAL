@@ -15,7 +15,7 @@ from plot_routines import plot_gantt, plot_throughput
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
 #scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA', 'Expanded-all-ports']
-scenarios = ['Baseline-limited-ports', 'Baseline-South-CA']
+scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA', 'Expanded-all-ports']
 base = "base.yaml"
 library_path = "library"
 savedir = "results"

@@ -35,7 +35,7 @@ allocations = {
         "support_vessel": ('example_support_vessel', 2),
         "towing_vessel": ('example_towing_vessel', 2),
         "mooring_install_vessel": ('example_support_vessel', 2),
-        "port": [('Port San Luis', 1), ('Humboldt', 1), ('Coos Bay', 1)]
+        "port": [('Port of San Luis', 1), ('Humboldt', 1), ('Coos Bay', 1)]
             },
     'Expanded-all-ports': {
         "support_vessel": ('example_support_vessel', 2),
