@@ -39,20 +39,28 @@ future_allocations = {
         ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]]
         ],
     'Baseline-limited-ports': [
-        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]]
+        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]]
         ],
     'Baseline-South-CA': [
         ["port", "Long Beach", [dt.datetime(2032, 1, 1)]],
-        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]]
+        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
+        ["port", "Long Beach", [dt.datetime(2034, 1, 1)]],
+        ["port", "Coos Bay", [dt.datetime(2038, 1, 1)]]
     ],
     'Baseline-Central-CA': [
         ["port", "Port of San Luis", [dt.datetime(2037, 1, 1)]],
-        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]]
+        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
+        ["port", "Coos Bay", [dt.datetime(2038, 1, 1)]]
     ],
     'Expanded-all-ports':[
         ["port", "Long Beach", [dt.datetime(2032, 1, 1)]],
         ["port", "Port of San Luis", [dt.datetime(2037, 1, 1)]],
         ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
         ["port", "Grays Harbor", [dt.datetime(2039, 1, 1)]],
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
+        ["port", "Coos Bay", [dt.datetime(2038, 1, 1)]]
     ]
 }
