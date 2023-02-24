@@ -241,12 +241,12 @@ class FloatingPipeline(BasePipeline):
             # Design Phases
             config["design_phases"] += [
                 "SemiSubmersibleDesign",
-                "MooringSystemDesign",
+                "SemiTautMooringSystemDesign",
             ]
 
             # Install Phases
             config["install_phases"]["MooringSystemInstallation"] = 0
-            config["install_phases"]["MooredSubInstallation"] = 0
+            config["install_phases"]["MooredSubInstallation"] = ('MooringSystemInstallation', 0.5)
 
             # Vessels
             config.update(

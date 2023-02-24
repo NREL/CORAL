@@ -5,7 +5,7 @@ allocations = {
         "support_vessel": ('example_support_vessel', 2),
         "towing_vessel": ('example_towing_vessel', 2),
         "mooring_install_vessel": ('example_support_vessel', 2),
-        "port": [('Port of San Luis', 0), ('Humboldt', 1), ('Coos Bay', 1)]
+        "port": [('Humboldt', 1), ('Coos Bay', 0)]
             },
     'Baseline-limited-ports': {
         "support_vessel": ('example_support_vessel', 2),
@@ -35,6 +35,9 @@ allocations = {
 }
 
 future_allocations = {
+    'test': [
+        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]]
+        ],
     'Baseline-limited-ports': [
         ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]]
         ],

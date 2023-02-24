@@ -14,8 +14,8 @@ from plot_routines import plot_gantt, plot_throughput
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
-scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA', 'Expanded-all-ports']
-# scenarios = ['Baseline-limited-ports']
+# scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA', 'Expanded-all-ports']
+scenarios = ['Baseline-limited-ports']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
@@ -26,10 +26,11 @@ writer = pd.ExcelWriter("results/cumulative-capacity.xlsx")
 if __name__ == '__main__':
 
     weather = pd.read_csv(weather_path, parse_dates=["datetime"]).set_index("datetime")
+    weather_long = pd.concat([weather]*6) # Need a 50+ year time series for limited port scenario (should be the longest)
 
     for s in scenarios:
         pipeline = FloatingPipeline(projects, base, sheet_name=s)
-        manager = GlobalManager(pipeline.configs, allocations[s], library_path=library_path)
+        manager = GlobalManager(pipeline.configs, allocations[s], library_path=library_path, weather=weather_long)
 
         # Check (and add) any port or vessel resources that are not online at the start of the simulatino
         for s_fa,v in future_allocations.items():
