@@ -10,7 +10,7 @@ import datetime as dt
 initialize_library("library")
 
 from helpers import allocations, future_allocations
-from plot_routines import plot_gantt, plot_throughput
+from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
@@ -47,6 +47,9 @@ if __name__ == '__main__':
         port_map = pipeline.projects[["name", "associated_port", "capacity"]].set_index("name").to_dict()['associated_port']
         df['port'] = [port_map[name] for name in df['name']]
 
+        region_map = pipeline.projects[["name", "reference_site_location"]].set_index("name").to_dict()['reference_site_location']
+        df['region'] = [region_map[name] for name in df['name']]
+
         capacity_map = pipeline.projects[["name", "capacity"]].set_index("name").to_dict()['capacity']
         df['capacity'] = [capacity_map[name] for name in df['name']]
 
@@ -54,6 +57,12 @@ if __name__ == '__main__':
         filename = str(s) + '_gantt'
         savefig = os.path.join(os.getcwd(), savedir, filename)
         plot_gantt(df, manager, fname=savefig)
+
+        # Plot first five projects:
+        filename_nt = str(s) + '_nt_gantt'
+        savefig_nt = os.path.join(os.getcwd(), savedir, filename_nt)
+        first_projs = 5
+        plot_gantt_nt(df, manager, first_projs, fname=savefig_nt)
 
         # create a .csv file with cummulative installed capacities
         df['finish-year'] = pd.DatetimeIndex(df['Date Finished']).year
@@ -102,5 +111,8 @@ if __name__ == '__main__':
         filename_thp = str(s) + '_throughput'
         savefig = os.path.join(os.getcwd(), savedir, filename_thp)
         plot_throughput(throughput, fname=savefig)
+
+        df.to_csv('results/df.csv')
+
 
 writer.close()
