@@ -14,12 +14,8 @@ from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
-scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA', 'Expanded-all-ports']
-<<<<<<< HEAD
-# scenarios = ['Baseline-limited-ports']
-=======
-#scenarios = ['Baseline-limited-ports']
->>>>>>> 6053630 (lease area plots)
+#scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA', 'Expanded-all-ports']
+scenarios = ['Baseline-limited-ports']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
@@ -56,6 +52,10 @@ if __name__ == '__main__':
 
         capacity_map = pipeline.projects[["name", "capacity"]].set_index("name").to_dict()['capacity']
         df['capacity'] = [capacity_map[name] for name in df['name']]
+
+        # Save csv
+        csv_name = 'results/' + s + '_data.csv'
+        df.to_csv(csv_name)
 
         # savefig = savedir + '/s' + '_gantt'
         filename = str(s) + '_gantt'

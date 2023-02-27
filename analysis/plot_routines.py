@@ -183,10 +183,11 @@ def plot_throughput(throughput, fname=None):
 def plot_gantt_nt(df, manager, num_proj, fname=None):
     fig, ax = initFigAxis()
 
-    df_nt = pd.DataFrame()
-    for i in range(1, num_proj+1):
-        row = df.loc[df['name'] == 'Project ' + str(i)]
-        df_nt = pd.concat([df_nt, row])
+    df_nt = df.tail(num_proj)
+
+#    for i in range(1, num_proj+1):
+#        row = df.iloc[df['project_num'] == str(i)]
+#        df_nt = pd.concat([df_nt, row])
 
     df_nt["Date Finished"].plot(kind="barh", ax=ax, zorder=4, label="Project Time", color="#b1b1b1")
     df_nt["Date Started"].plot(kind="barh", color="#e9e9e9", ax=ax, zorder=4, label="Project Delay", hatch="////", linewidth=0.5)
