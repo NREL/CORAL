@@ -54,8 +54,8 @@ if __name__ == '__main__':
         df['capacity'] = [capacity_map[name] for name in df['name']]
 
         # Save csv
-        csv_name = 'results/' + s + '_data.csv'
-        df.to_csv(csv_name)
+        #csv_name = 'results/' + s + '_data.csv'
+        #df.to_csv(csv_name)
 
         # savefig = savedir + '/s' + '_gantt'
         filename = str(s) + '_gantt'
