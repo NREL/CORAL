@@ -56,14 +56,17 @@ if __name__ == '__main__':
         # savefig = savedir + '/s' + '_gantt'
         filename = 'Full-Scenario-Gantt/' + str(s) + '_gantt'
         savefig = os.path.join(os.getcwd(), savedir, filename)
-        assign_colors(df)
-        plot_gantt(df, manager, fname=savefig)
+
+        # color_by = "region" or "port"
+        color_by = "port"
+        assign_colors(df, color_by)
+        plot_gantt(df, manager, color_by, fname=savefig)
 
         # Plot first five projects:
         first_projs = 5
         filename_nt = 'Near-term-Gantt/' + str(s) + '_nt_gantt'
         savefig_nt = os.path.join(os.getcwd(), savedir, filename_nt)
-        plot_gantt_nt(df, manager, first_projs, fname=savefig_nt)
+        plot_gantt_nt(df, manager, first_projs, color_by, fname=savefig_nt)
 
         # create a .csv file with cummulative installed capacities
         df['finish-year'] = pd.DatetimeIndex(df['Date Finished']).year

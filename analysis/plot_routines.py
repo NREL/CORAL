@@ -122,27 +122,41 @@ def initFigAxis(figx=28, figy=21):
     ax = fig.add_subplot(111)
     return fig, ax
 
-def plot_gantt(df, manager, fname=None):
+def plot_gantt(df, manager, color_by, fname=None):
     fig, ax = initFigAxis()
+
+    assign_colors(df, color_by)
 
     df["Date Finished"].plot(kind="barh", ax=ax, zorder=4, label="Project Time", color=df["install color"])
     df["Date Started"].plot(kind="barh", color=df["delay color"], ax=ax, zorder=4, label="Project Delay", hatch="////", linewidth=0.5)
     df["Date Initialized"].plot(kind='barh', ax=ax, zorder=4, label="__nolabel__", color='w')
 
-    base_handles = [
+    region_base_handles = [
     Patch(facecolor=color, label=label)
     for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD'])
     ]
 
-    exp_handles = [
+    region_exp_handles = [
     Patch(facecolor=color, label=label)
     for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA', 'Southern WA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD', '#27AE60'])
     ]
 
-    if "Southern WA" in df['region']:
-        handles = exp_handles
+    port_base_handles = [
+    Patch(facecolor=color, label=label)
+    for label, color in zip(['Humboldt', 'Coos Bay', 'Port San Luis', 'Long Beach', 'Grays Harbor'], ['#F39C12', '#16A085', '#C0392B', '#8E44AD', '#3498DB'])
+    ]
+
+    #port_exp_handles = [
+    #Patch(facecolor=color, label=label)
+    #for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA', 'Southern WA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD', '#27AE60'])
+    #]
+
+    if "Southern WA" in df[color_by]:
+        handles = region_exp_handles
+    elif color_by == "port":
+        handles = port_base_handles
     else:
-        handles = base_handles
+        handles = region_base_handles
 
     # Plot formatting
     ax.set_xlabel("")
@@ -161,7 +175,7 @@ def plot_gantt(df, manager, fname=None):
 
     ax.axvline(dt.date(2046, 1, 1), lw=0.5, ls="--", color="#2C3E50", zorder=6)
     installed_capacity_46 = get_installed_capacity_by(df, 2046)
-    ax.text(x=dt.date(2051, 1, 1), y=15, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW. \nCapacity installed \nby end of 2045: \n{installed_capacity_46/1000:,.3} GW.", fontsize=20, color="#2C3E50")
+    ax.text(x=dt.date(2053, 1, 1), y=15, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW. \nCapacity installed \nby end of 2045: \n{installed_capacity_46/1000:,.3} GW.", fontsize=30, color="#2C3E50")
 
     fig.subplots_adjust(left=0.25)
 
@@ -195,8 +209,10 @@ def plot_throughput(throughput, fname=None):
     #fig.savefig(fname_t, dpi=300)
 
 ## Plot a near-term gantt chart
-def plot_gantt_nt(df, manager, num_proj, fname=None):
+def plot_gantt_nt(df, manager, num_proj, color_by, fname=None):
     fig, ax = initFigAxis()
+
+    assign_colors(df, color_by)
 
     df_nt = df.tail(num_proj)
 
@@ -216,7 +232,7 @@ def plot_gantt_nt(df, manager, num_proj, fname=None):
 
     ax.axvline(dt.date(2031, 1, 1), lw=0.5, ls="--", color="#2C3E50", zorder=6)
     installed_capacity_31 = get_installed_capacity_by(df, 2031)
-    ax.text(x=dt.date(2051, 1, 1), y=25, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW", fontsize=20, color="#2C3E50")
+    ax.text(x=dt.date(2037, 1, 1), y=25, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW", fontsize=24, color="#2C3E50")
 
     fig.subplots_adjust(left=0.25)
 
@@ -225,30 +241,73 @@ def plot_gantt_nt(df, manager, num_proj, fname=None):
         mysave(fig, fname)
         plt.close()
 
-def assign_colors(df):
+def assign_colors(df, color_by):
 
     delay_color = []
     install_color = []
 
     for index, row in df.iterrows():
-        if df["region"][index] == "Northern CA":
+        if df[color_by][index] == "Northern CA":
             delay_color.append("#F5B7B1")
             install_color.append("#E74C3C")
-        elif df["region"][index] == "Central CA":
+        elif df[color_by][index] == "Central CA":
             delay_color.append("#D2B4DE")
             install_color.append("#8E44AD")
-        elif df["region"][index] == "Central OR":
+        elif df[color_by][index] == "Central OR":
             delay_color.append("#AED6F1")
             install_color.append("#3498DB")
-        elif df["region"][index] == "Southern OR":
+        elif df[color_by][index] == "Southern OR":
             delay_color.append("#F9E79F")
             install_color.append("#F1C40F")
-        elif df["region"][index] == "Southern WA":
+        elif df[color_by][index] == "Southern WA":
             delay_color.append("#A9DFBF")
             install_color.append("#27AE60")
+        elif df[color_by][index] == "Humboldt":
+            delay_color.append("#FAD7A0")
+            install_color.append("#F39C12")
+        elif df[color_by][index] == "Coos Bay":
+            delay_color.append("#A2D9CE")
+            install_color.append("#16A085")
+        elif df[color_by][index] == "Port of San Luis":
+            delay_color.append("#E6B0AA")
+            install_color.append("#C0392B")
+        elif df[color_by][index] == "Long Beach":
+            delay_color.append("#D2B4DE")
+            install_color.append("#8E44AD")
+        elif df[color_by][index] == "Grays Harbor":
+            delay_color.append("#AED6F1")
+            install_color.append("#3498DB")
         else:
             delay_color.append("#e9e9e9")
             install_color.append("#e9e9e9")
 
     df["delay color"] = delay_color
     df["install color"] = install_color
+
+#def assign_port_colors(df):
+
+#    delay_color = []
+#    install_color = []
+
+#    for index, row in df.iterrows():
+#        if df["port"][index] == "Humboldt":
+#            delay_color.append("#FAD7A0")
+#            install_color.append("#F39C12")
+#        elif df["port"][index] == "Coos Bay":
+#            delay_color.append("#A2D9CE")
+#            install_color.append("#16A085")
+#        elif df["port"][index] == "Port San Luis":
+#            delay_color.append("#E6B0AA")
+#            install_color.append("#C0392B")
+#        elif df["port"][index] == "Long Beach":
+#            delay_color.append("#D2B4DE")
+#            install_color.append("#8E44AD")
+#        elif df["port"][index] == "Grays Harbor":
+#            delay_color.append("#AED6F1  ")
+#            install_color.append("#3498DB")
+#        else:
+#            delay_color.append("#e9e9e9")
+#            install_color.append("#e9e9e9")
+
+#    df["delay color"] = delay_color
+#    df["install color"] = install_color
