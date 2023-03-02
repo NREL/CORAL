@@ -10,7 +10,7 @@ import datetime as dt
 initialize_library("library")
 
 from helpers import allocations, future_allocations
-from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt
+from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
@@ -47,25 +47,22 @@ if __name__ == '__main__':
         port_map = pipeline.projects[["name", "associated_port", "capacity"]].set_index("name").to_dict()['associated_port']
         df['port'] = [port_map[name] for name in df['name']]
 
-        region_map = pipeline.projects[["name", "reference_site_location"]].set_index("name").to_dict()['reference_site_location']
+        region_map = pipeline.projects[["name", "reference_site_region"]].set_index("name").to_dict()['reference_site_region']
         df['region'] = [region_map[name] for name in df['name']]
 
         capacity_map = pipeline.projects[["name", "capacity"]].set_index("name").to_dict()['capacity']
         df['capacity'] = [capacity_map[name] for name in df['name']]
 
-        # Save csv
-        #csv_name = 'results/' + s + '_data.csv'
-        #df.to_csv(csv_name)
-
         # savefig = savedir + '/s' + '_gantt'
-        filename = str(s) + '_gantt'
+        filename = 'Full-Scenario-Gantt/' + str(s) + '_gantt'
         savefig = os.path.join(os.getcwd(), savedir, filename)
+        assign_colors(df)
         plot_gantt(df, manager, fname=savefig)
 
         # Plot first five projects:
-        filename_nt = str(s) + '_nt_gantt'
-        savefig_nt = os.path.join(os.getcwd(), savedir, filename_nt)
         first_projs = 5
+        filename_nt = 'Near-term-Gantt/' + str(s) + '_nt_gantt'
+        savefig_nt = os.path.join(os.getcwd(), savedir, filename_nt)
         plot_gantt_nt(df, manager, first_projs, fname=savefig_nt)
 
         # create a .csv file with cummulative installed capacities
@@ -112,9 +109,12 @@ if __name__ == '__main__':
         )["capacity"]
 
         # Plot throughput
-        filename_thp = str(s) + '_throughput'
+        filename_thp = 'Throughput/' + str(s) + '_throughput'
         savefig = os.path.join(os.getcwd(), savedir, filename_thp)
         plot_throughput(throughput, fname=savefig)
 
+        # Save csv
+        #csv_name = 'results/' + s + '_data.csv'
+        #df.to_csv(csv_name)
 
 writer.close()

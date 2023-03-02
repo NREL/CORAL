@@ -3,6 +3,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.text as txt
 import matplotlib.patches as mpatches
+from matplotlib.patches import Patch
 import os
 import datetime as dt
 import pandas as pd
@@ -116,7 +117,7 @@ def myformat(ax, linewidth=linewidth, xticklabel=tickLabelSize, yticklabel=tickL
     else:
         myformat(ax)
 
-def initFigAxis(figx=12, figy=9):
+def initFigAxis(figx=28, figy=21):
     fig = plt.figure(figsize=(figx, figy))
     ax = fig.add_subplot(111)
     return fig, ax
@@ -124,29 +125,43 @@ def initFigAxis(figx=12, figy=9):
 def plot_gantt(df, manager, fname=None):
     fig, ax = initFigAxis()
 
-    df["Date Finished"].plot(kind="barh", ax=ax, zorder=4, label="Project Time", color="#b1b1b1")
-    df["Date Started"].plot(kind="barh", color="#e9e9e9", ax=ax, zorder=4, label="Project Delay", hatch="////", linewidth=0.5)
+    df["Date Finished"].plot(kind="barh", ax=ax, zorder=4, label="Project Time", color=df["install color"])
+    df["Date Started"].plot(kind="barh", color=df["delay color"], ax=ax, zorder=4, label="Project Delay", hatch="////", linewidth=0.5)
     df["Date Initialized"].plot(kind='barh', ax=ax, zorder=4, label="__nolabel__", color='w')
 
+    base_handles = [
+    Patch(facecolor=color, label=label)
+    for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD'])
+    ]
+
+    exp_handles = [
+    Patch(facecolor=color, label=label)
+    for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA', 'Southern WA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD', '#27AE60'])
+    ]
+
+    if "Southern WA" in df['region']:
+        handles = exp_handles
+    else:
+        handles = base_handles
 
     # Plot formatting
     ax.set_xlabel("")
     ax.set_ylabel("")
-    _ = ax.set_yticklabels(df['name'])
+    _ = ax.set_yticklabels(df['region'])
 
     plt.yticks(fontsize=6)
     plt.plot((0, 0), (0, 30), scaley = False)
-    ax.legend()
+    ax.legend(handles=handles, loc = 'upper right')
     ax.set_xlim(manager._start - dt.timedelta(days=30), dt.date(2060, 6, 1) + dt.timedelta(days=30))
     num_proj = len(df['Date Finished'])
 
-    ax.axvline(dt.date(2031, 1, 1), lw=0.5, ls="--", color="#6400D3", zorder=6)
+    ax.axvline(dt.date(2031, 1, 1), lw=0.5, ls="--", color="#2C3E50", zorder=6)
     installed_capacity_31 = get_installed_capacity_by(df, 2031)
-    ax.text(x=dt.date(2051, 1, 1), y=25, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW", fontsize=20, color="#6400D3")
+    #ax.text(x=dt.date(2051, 1, 1), y=25, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW", fontsize=20, color="#2C3E50")
 
-    ax.axvline(dt.date(2046, 1, 1), lw=0.5, ls="--", color="#008080", zorder=6)
+    ax.axvline(dt.date(2046, 1, 1), lw=0.5, ls="--", color="#2C3E50", zorder=6)
     installed_capacity_46 = get_installed_capacity_by(df, 2046)
-    ax.text(x=dt.date(2051, 1, 1), y=15, s=f"Capacity installed \nby end of 2045: \n{installed_capacity_46/1000:,.3} GW", fontsize=20, color="#008080")
+    ax.text(x=dt.date(2051, 1, 1), y=15, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW. \nCapacity installed \nby end of 2045: \n{installed_capacity_46/1000:,.3} GW.", fontsize=20, color="#2C3E50")
 
     fig.subplots_adjust(left=0.25)
 
@@ -185,12 +200,8 @@ def plot_gantt_nt(df, manager, num_proj, fname=None):
 
     df_nt = df.tail(num_proj)
 
-#    for i in range(1, num_proj+1):
-#        row = df.iloc[df['project_num'] == str(i)]
-#        df_nt = pd.concat([df_nt, row])
-
-    df_nt["Date Finished"].plot(kind="barh", ax=ax, zorder=4, label="Project Time", color="#b1b1b1")
-    df_nt["Date Started"].plot(kind="barh", color="#e9e9e9", ax=ax, zorder=4, label="Project Delay", hatch="////", linewidth=0.5)
+    df_nt["Date Finished"].plot(kind="barh", ax=ax, zorder=4, label="Project Time", color=df_nt["install color"])
+    df_nt["Date Started"].plot(kind="barh", color=df_nt["delay color"], ax=ax, zorder=4, label="Project Delay", hatch="////", linewidth=0.5)
     df_nt["Date Initialized"].plot(kind='barh', ax=ax, zorder=4, label="__nolabel__", color='w')
 
     # Plot formatting
@@ -203,9 +214,9 @@ def plot_gantt_nt(df, manager, num_proj, fname=None):
     ax.legend()
     ax.set_xlim(manager._start - dt.timedelta(days=30), dt.date(2040, 6, 1) + dt.timedelta(days=30))
 
-    ax.axvline(dt.date(2031, 1, 1), lw=0.5, ls="--", color="#6400D3", zorder=6)
+    ax.axvline(dt.date(2031, 1, 1), lw=0.5, ls="--", color="#2C3E50", zorder=6)
     installed_capacity_31 = get_installed_capacity_by(df, 2031)
-    ax.text(x=dt.date(2051, 1, 1), y=25, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW", fontsize=20, color="#6400D3")
+    ax.text(x=dt.date(2051, 1, 1), y=25, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW", fontsize=20, color="#2C3E50")
 
     fig.subplots_adjust(left=0.25)
 
@@ -213,3 +224,31 @@ def plot_gantt_nt(df, manager, num_proj, fname=None):
         myformat(ax)
         mysave(fig, fname)
         plt.close()
+
+def assign_colors(df):
+
+    delay_color = []
+    install_color = []
+
+    for index, row in df.iterrows():
+        if df["region"][index] == "Northern CA":
+            delay_color.append("#F5B7B1")
+            install_color.append("#E74C3C")
+        elif df["region"][index] == "Central CA":
+            delay_color.append("#D2B4DE")
+            install_color.append("#8E44AD")
+        elif df["region"][index] == "Central OR":
+            delay_color.append("#AED6F1")
+            install_color.append("#3498DB")
+        elif df["region"][index] == "Southern OR":
+            delay_color.append("#F9E79F")
+            install_color.append("#F1C40F")
+        elif df["region"][index] == "Southern WA":
+            delay_color.append("#A9DFBF")
+            install_color.append("#27AE60")
+        else:
+            delay_color.append("#e9e9e9")
+            install_color.append("#e9e9e9")
+
+    df["delay color"] = delay_color
+    df["install color"] = install_color
