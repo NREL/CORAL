@@ -7,6 +7,7 @@ from matplotlib.patches import Patch
 import os
 import datetime as dt
 import pandas as pd
+import numpy as np
 
 from CORAL.utils import get_installed_capacity_by
 
@@ -284,30 +285,48 @@ def assign_colors(df, color_by):
     df["delay color"] = delay_color
     df["install color"] = install_color
 
-#def assign_port_colors(df):
+def plot_summary(scenarios, capacity_list):
+    by_year = 2045
 
-#    delay_color = []
-#    install_color = []
+    inv_df = pd.read_excel('library/investments/scenario-investments.xlsx', sheet_name='schedule')
+    inv_df = inv_df.set_index('Year')
 
-#    for index, row in df.iterrows():
-#        if df["port"][index] == "Humboldt":
-#            delay_color.append("#FAD7A0")
-#            install_color.append("#F39C12")
-#        elif df["port"][index] == "Coos Bay":
-#            delay_color.append("#A2D9CE")
-#            install_color.append("#16A085")
-#        elif df["port"][index] == "Port San Luis":
-#            delay_color.append("#E6B0AA")
-#            install_color.append("#C0392B")
-#        elif df["port"][index] == "Long Beach":
-#            delay_color.append("#D2B4DE")
-#            install_color.append("#8E44AD")
-#        elif df["port"][index] == "Grays Harbor":
-#            delay_color.append("#AED6F1  ")
-#            install_color.append("#3498DB")
-#        else:
-#            delay_color.append("#e9e9e9")
-#            install_color.append("#e9e9e9")
+    invest_list = []
+    for s in scenarios:
+        invest_list.append(inv_df[s][by_year])
 
-#    df["delay color"] = delay_color
-#    df["install color"] = install_color
+    fig = plt.figure(figsize=(6, 4))
+    ax1 = fig.add_subplot(111)
+    ax2 = ax1.twinx()
+    width = 0.4
+
+    x_ind = np.arange(len(scenarios))
+
+    ax1.bar(x_ind-width/2, capacity_list, width, color='#3C2AC0')
+    ax1.set_ylabel('Installed capaciy by end of ' + str(by_year) + ', GW')
+    ax1.set_ylim([0,60])
+
+    ax2.bar(x_ind+width/2, invest_list, width, color='#FFA319')
+    ax2.set_ylabel('Investment required, $M')
+    ax2.set_ylim([0,8000])
+    ax2.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+
+    ax1.set_xticks(x_ind)
+    plot_names = ['Baseline, limited ports', 'Baseline, South CA', 'Baseline, Central CA', 'Expanded, all ports']
+    ax1.set_xticklabels(plot_names, rotation=45)
+
+    handles = [
+        Patch(facecolor=color, label=label)
+        for label, color in zip(['Installed capacity', 'Investment'], ['#3C2AC0', '#FFA319'])
+    ]
+
+    ax1.legend(handles=handles, loc='upper right');
+
+    fig.savefig('results/summary.png', bbox_inches='tight', dpi=300)
+
+#    for s in scenarios:
+#        ax1.bar(x_ind-width/2, capacity[str(s)+' Cummulative Capacity'][by_year], width, color='#3C2AC0')
+#        ax2.bar(x_ind+width/2)
+
+#    for s in scenarios:

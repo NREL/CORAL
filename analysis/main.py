@@ -10,7 +10,7 @@ import datetime as dt
 initialize_library("library")
 
 from helpers import allocations, future_allocations
-from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors
+from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors, plot_summary
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
@@ -20,6 +20,8 @@ base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
 savedir = "results"
+
+capacity_2045=[]
 
 writer = pd.ExcelWriter("results/cumulative-capacity.xlsx")
 
@@ -78,8 +80,12 @@ if __name__ == '__main__':
         for year in all_years:
             installed_capacity = get_installed_capacity_by(df, year)
             annual_cap.append(installed_capacity)
-        caps = pd.DataFrame(list(zip(all_years, annual_cap)), columns =['Year', 'Cummulative Installed Capacity'])
+        caps = pd.DataFrame(list(zip(all_years, annual_cap)), columns =['Year', 'Cummulative Capacity'])
         caps.to_excel(writer, sheet_name=str(s), index=False)
+        #c = pd.concat([c, caps], axis=1)
+        #c.to_csv('results/all-capacities.csv')
+
+        capacity_2045.append((get_installed_capacity_by(df, 2045))/1000)
 
         # Annual throughput
         res = []
@@ -121,3 +127,5 @@ if __name__ == '__main__':
         #df.to_csv(csv_name)
 
 writer.close()
+
+plot_summary(scenarios, capacity_2045)
