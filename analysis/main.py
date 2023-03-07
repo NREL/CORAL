@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 from CORAL import FloatingPipeline, GlobalManager
-from CORAL.utils import get_installed_capacity_by
+from CORAL.utils import get_installed_capacity_by, get_action_logs
 from ORBIT.core.library import initialize_library
 import matplotlib.pyplot as plt
 import datetime as dt
@@ -15,14 +15,13 @@ from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_col
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
 scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA', 'Expanded-all-ports']
-#scenarios = ['Baseline-limited-ports']
+#scenarios = ['test']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
 savedir = "results"
 
 capacity_2045=[]
-
 writer = pd.ExcelWriter("results/cumulative-capacity.xlsx")
 
 if __name__ == '__main__':
@@ -30,17 +29,25 @@ if __name__ == '__main__':
     weather = pd.read_csv(weather_path, parse_dates=["datetime"]).set_index("datetime")
     weather_long = pd.concat([weather]*6) # Need a 50+ year time series for limited port scenario (should be the longest)
 
+
     for s in scenarios:
         pipeline = FloatingPipeline(projects, base, sheet_name=s)
         manager = GlobalManager(pipeline.configs, allocations[s], library_path=library_path, weather=weather_long)
 
-        # Check (and add) any port or vessel resources that are not online at the start of the simulatino
+        # Check (and add) any port or vessel resources that are not online at the start of the simulation
         for s_fa,v in future_allocations.items():
             if s_fa == s:
                 for vi in v:
                     manager.add_future_resources(vi[0], vi[1], vi[2])
 
         manager.run()
+
+        # Output action logs and group them by vessel and activity type.
+        total = get_action_logs(manager)
+
+        actions_filename = str(s) + '_agent_actions_sum.csv'
+        for i in total:
+            i.to_csv(savedir + '/Actions/' + actions_filename)
 
         # Plot and save results, assign ports to projects
         df = pd.DataFrame(manager.logs).iloc[::-1]
