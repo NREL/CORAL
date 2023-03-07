@@ -316,6 +316,8 @@ def plot_summary(scenarios, capacity_list):
     plot_names = ['Baseline, limited ports', 'Baseline, South CA', 'Baseline, Central CA', 'Expanded, all ports']
     ax1.set_xticklabels(plot_names, rotation=45)
 
+    plt.title('made with dummy investment numbers!', color = 'red')
+
     handles = [
         Patch(facecolor=color, label=label)
         for label, color in zip(['Installed capacity', 'Investment'], ['#3C2AC0', '#FFA319'])
@@ -324,9 +326,3 @@ def plot_summary(scenarios, capacity_list):
     ax1.legend(handles=handles, loc='upper right');
 
     fig.savefig('results/summary.png', bbox_inches='tight', dpi=300)
-
-#    for s in scenarios:
-#        ax1.bar(x_ind-width/2, capacity[str(s)+' Cummulative Capacity'][by_year], width, color='#3C2AC0')
-#        ax2.bar(x_ind+width/2)
-
-#    for s in scenarios:

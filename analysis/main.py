@@ -129,7 +129,7 @@ if __name__ == '__main__':
         savefig = os.path.join(os.getcwd(), savedir, filename_thp)
         plot_throughput(throughput, fname=savefig)
 
-        # Save csv
+        # Save the project dataframe
         #csv_name = 'results/' + s + '_data.csv'
         #df.to_csv(csv_name)
 
