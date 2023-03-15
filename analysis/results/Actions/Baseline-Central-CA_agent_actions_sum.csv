@@ -21,8 +21,7 @@ Mooring System Installation Vessel,Transit,MooringSystemInstallation,8215.0
 Multi-Purpose Support Vessel,Ballast to Operational Draft,MooredSubInstallation,11622.0
 Multi-Purpose Support Vessel,Check Mooring Lines,MooredSubInstallation,11622.0
 Multi-Purpose Support Vessel,"Connect Mooring Lines, Pre-tension and pre-stretch",MooredSubInstallation,38740.0
-Multi-Purpose Support Vessel,Delay,MooredSubInstallation,76874.0
-Multi-Purpose Support Vessel,Delay: No support vessel for Moored substructures,MooredSubInstallation,179343.0
+Multi-Purpose Support Vessel,Delay,MooredSubInstallation,256217.0
 Multi-Purpose Support Vessel,Mobilize,MooredSubInstallation,5880.0
 Multi-Purpose Support Vessel,Position Substructure,MooredSubInstallation,3874.0
 Multi-Purpose Support Vessel,Transit,MooredSubInstallation,350.0

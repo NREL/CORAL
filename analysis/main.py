@@ -7,6 +7,7 @@ from CORAL.utils import get_installed_capacity_by, get_action_logs
 from ORBIT.core.library import initialize_library
 import matplotlib.pyplot as plt
 import datetime as dt
+from datetime import datetime
 initialize_library("library")
 
 from helpers import allocations, future_allocations
@@ -15,11 +16,16 @@ from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_col
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
 scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA', 'Expanded-all-ports']
-#scenarios = ['Baseline-limited-ports']
+# scenarios = ['Baseline-limited-ports']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
+weather_year = 2011  # TODO: Find a representative year from 2010 - 2018
 savedir = "results"
+
+# O&M port activities
+OM_start_date = datetime(weather_year, 6, 1, 00, 00, 00)
+OM_end_date = datetime(weather_year, 6, 15, 00, 00, 00)
 
 capacity_2045=[]
 writer = pd.ExcelWriter("results/cumulative-capacity.xlsx")
@@ -27,7 +33,13 @@ writer = pd.ExcelWriter("results/cumulative-capacity.xlsx")
 if __name__ == '__main__':
 
     weather = pd.read_csv(weather_path, parse_dates=["datetime"]).set_index("datetime")
-    weather_long = pd.concat([weather]*6) # Need a 50+ year time series for limited port scenario (should be the longest)
+    # Extract weather from preferred year
+    weather_year = weather.iloc[weather.index.year == weather_year]
+    # Define column for when the O&M port is in use - True for when O&M activiteis take place
+    weather_year['port_in_use'] = False
+    weather_year.loc[(weather_year.index > OM_start_date) & (weather_year.index < OM_end_date), "port_in_use"] = True
+
+    weather_long = pd.concat([weather_year]*50) # Need a 50+ year time series for limited port scenario (should be the longest)
 
 
     for s in scenarios:

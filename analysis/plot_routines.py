@@ -313,7 +313,7 @@ def plot_summary(scenarios, capacity_list):
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     ax1.set_xticks(x_ind)
-    plot_names = ['Baseline, limited ports', 'Baseline, South CA', 'Baseline, Central CA', 'Expanded, all ports']
+    plot_names = scenarios
     ax1.set_xticklabels(plot_names, rotation=45)
 
     plt.title('made with dummy investment numbers!', color = 'red')
