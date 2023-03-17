@@ -260,7 +260,7 @@ class FloatingPipeline(BasePipeline):
             config.update(
                 {
                     "MooredSubInstallation": {
-                        "support_vessel": "_shared_pool_:example_support_vessel",
+                        "ahts_vessel": "_shared_pool_:example_ahts_vessel",
                         "towing_vessel": "_shared_pool_:example_towing_vessel",
                     }
                 }

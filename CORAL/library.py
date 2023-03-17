@@ -14,7 +14,7 @@ CATEGORY_MAP = {
     "wtiv": "vessels",
     "feeder": "vessels",
     "port": "ports",
-    "support_vessel": "vessels",
+    "ahts_vessel": "vessels",
     "towing_vessel": "vessels",
     "mooring_install_vessel": "vessels",
 }
