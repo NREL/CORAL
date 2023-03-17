@@ -2,6 +2,10 @@ agent,action,phase,duration
 Floating Substation Installation Vessel,Ballast to Operational Draft,FloatingSubstationInstallation,660.0
 Floating Substation Installation Vessel,Check Mooring Lines,FloatingSubstationInstallation,3960.0
 Floating Substation Installation Vessel,Connect Mooring Lines,FloatingSubstationInstallation,7260.0
+<<<<<<< HEAD:analysis/results/Actions/Expanded-all-ports_agent_actions_sum.csv
+=======
+Floating Substation Installation Vessel,Delay,FloatingSubstationInstallation,21512.0
+>>>>>>> 6912860e075c552c09855d034a999155606e477e:analysis/results/Actions/Expanded-high_agent_actions_sum.csv
 Floating Substation Installation Vessel,Delay: Waiting on Completed Assembly,FloatingSubstationInstallation,1320.0
 Floating Substation Installation Vessel,Install Mooring Line,FloatingSubstationInstallation,1335.096
 Floating Substation Installation Vessel,Install Suction Pile Anchor,FloatingSubstationInstallation,4965.0960000000005
@@ -9,6 +13,10 @@ Floating Substation Installation Vessel,Perform Mooring Site Survey,FloatingSubs
 Floating Substation Installation Vessel,Position Onsite,FloatingSubstationInstallation,220.0
 Floating Substation Installation Vessel,Tow Substation to Site,FloatingSubstationInstallation,916.6666666666667
 Floating Substation Installation Vessel,Transit,FloatingSubstationInstallation,550.0
+<<<<<<< HEAD:analysis/results/Actions/Expanded-all-ports_agent_actions_sum.csv
+=======
+Mooring System Installation Vessel,Delay,MooringSystemInstallation,116112.0
+>>>>>>> 6912860e075c552c09855d034a999155606e477e:analysis/results/Actions/Expanded-high_agent_actions_sum.csv
 Mooring System Installation Vessel,Install Drag Embedment Anchor,MooringSystemInstallation,141449.8155
 Mooring System Installation Vessel,Install Mooring Line,MooringSystemInstallation,35717.815500000004
 Mooring System Installation Vessel,Load Mooring System,MooringSystemInstallation,14685.0
@@ -16,6 +24,7 @@ Mooring System Installation Vessel,Mobilize,MooringSystemInstallation,9240.0
 Mooring System Installation Vessel,Perform Mooring Site Survey,MooringSystemInstallation,35244.0
 Mooring System Installation Vessel,Position Onsite,MooringSystemInstallation,17622.0
 Mooring System Installation Vessel,Transit,MooringSystemInstallation,12395.0
+<<<<<<< HEAD:analysis/results/Actions/Expanded-all-ports_agent_actions_sum.csv
 Substation Assembly Line 1,Attach Topside,FloatingSubstationInstallation,2640.0
 Substation Assembly Line 1,Substation Substructure Assembly,FloatingSubstationInstallation,0.0
 Substructure Assembly Line 1,Substructure Assembly,MooredSubInstallation,493416.0
@@ -44,6 +53,42 @@ Towing Group 3,Position Substructure,MooredSubInstallation,1892.0
 Towing Group 3,Tow Substructure,MooredSubInstallation,6757.142857142858
 Towing Group 3,Transit,MooredSubInstallation,7883.333333333334
 Turbine Assembly Line 1,Delay: No Substructures in Wet Storage,MooredSubInstallation,71203.0
+=======
+Multi-Purpose Support Vessel,Ballast to Operational Draft,MooredSubInstallation,17622.0
+Multi-Purpose Support Vessel,Check Mooring Lines,MooredSubInstallation,17622.0
+Multi-Purpose Support Vessel,"Connect Mooring Lines, Pre-tension and pre-stretch",MooredSubInstallation,58740.0
+Multi-Purpose Support Vessel,Delay,MooredSubInstallation,127388.0
+Multi-Purpose Support Vessel,Delay: Not enough vessels for Moored substructures,MooredSubInstallation,345669.5
+Multi-Purpose Support Vessel,Mobilize,MooredSubInstallation,9240.0
+Multi-Purpose Support Vessel,Position Substructure,MooredSubInstallation,5874.0
+Multi-Purpose Support Vessel,Transit,MooredSubInstallation,550.0
+Substation Assembly Line 1,Attach Topside,FloatingSubstationInstallation,2640.0
+Substation Assembly Line 1,Substation Substructure Assembly,FloatingSubstationInstallation,0.0
+Substructure Assembly Line 1,Substructure Assembly,MooredSubInstallation,493416.0
+Towing Group 1,Ballast to Towing Draft,MooredSubInstallation,5994.0
+Towing Group 1,Delay,MooredSubInstallation,37669.0
+Towing Group 1,Delay: No Completed Assemblies Available,MooredSubInstallation,436211.47619047627
+Towing Group 1,Positioning Support,MooredSubInstallation,79040.0
+Towing Group 1,Queue,MooredSubInstallation,8673.0
+Towing Group 1,Tow Substructure,MooredSubInstallation,7135.714285714286
+Towing Group 1,Transit,MooredSubInstallation,8325.0
+Towing Group 2,Ballast to Towing Draft,MooredSubInstallation,5856.0
+Towing Group 2,Delay,MooredSubInstallation,39031.0
+Towing Group 2,Delay: No Completed Assemblies Available,MooredSubInstallation,438338.92857142864
+Towing Group 2,Positioning Support,MooredSubInstallation,76366.0
+Towing Group 2,Queue,MooredSubInstallation,7769.499999999999
+Towing Group 2,Tow Substructure,MooredSubInstallation,6971.428571428572
+Towing Group 2,Transit,MooredSubInstallation,8133.333333333334
+Towing Group 3,Ballast to Towing Draft,MooredSubInstallation,5772.0
+Towing Group 3,Delay,MooredSubInstallation,31628.0
+Towing Group 3,Delay: No Completed Assemblies Available,MooredSubInstallation,446383.0952380953
+Towing Group 3,Positioning Support,MooredSubInstallation,72115.0
+Towing Group 3,Queue,MooredSubInstallation,11230.999999999998
+Towing Group 3,Tow Substructure,MooredSubInstallation,6871.428571428572
+Towing Group 3,Transit,MooredSubInstallation,8016.666666666667
+Turbine Assembly Line 1,Delay,MooredSubInstallation,145397.0
+Turbine Assembly Line 1,Delay: No Substructures in Wet Storage,MooredSubInstallation,10556.5
+>>>>>>> 6912860e075c552c09855d034a999155606e477e:analysis/results/Actions/Expanded-high_agent_actions_sum.csv
 Turbine Assembly Line 1,Electrical Completion,MooredSubInstallation,211464.0
 Turbine Assembly Line 1,Lift and Attach Blade,MooredSubInstallation,30838.5
 Turbine Assembly Line 1,Lift and Attach Nacelle,MooredSubInstallation,35244.0

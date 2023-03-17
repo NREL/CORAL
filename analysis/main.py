@@ -11,16 +11,17 @@ from datetime import datetime
 initialize_library("library")
 
 from helpers import allocations, future_allocations
-from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors, plot_summary
+from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors, plot_summary, plot_deployment
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
-scenarios = ['Baseline-limited-ports', 'Baseline-South-CA', 'Baseline-Central-CA', 'Expanded-all-ports']
-# scenarios = ['Baseline-limited-ports']
+#scenarios = ['Baseline-low', 'Baseline-mid-SC', 'Baseline-mid-CC', 'Moderate-low', 'Moderate-mid-SC', 'Expanded-high']
+scenarios = ['Baseline-low']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
-weather_year = 2011  # TODO: Find a representative year from 2010 - 2018
+
+weather_year = 2011
 weather_on = True
 
 savedir = "results"
@@ -45,7 +46,6 @@ if __name__ == '__main__':
         weather_long = pd.concat([weather_year]*50) # Need a 50+ year time series for limited port scenario (should be the longest)
     else:
         weather_long = None
-
 
     for s in scenarios:
         pipeline = FloatingPipeline(projects, base, sheet_name=s)
@@ -101,7 +101,7 @@ if __name__ == '__main__':
         savefig_nt = os.path.join(os.getcwd(), savedir, filename_nt)
         plot_gantt_nt(df, manager, first_projs, color_by, fname=savefig_nt)
 
-        # create a .csv file with cummulative installed capacities
+        # create a .csv file with cumulative installed capacities
         df['finish-year'] = pd.DatetimeIndex(df['Date Finished']).year
 
         minyear = df['finish-year'].min()
@@ -111,7 +111,7 @@ if __name__ == '__main__':
         for year in all_years:
             installed_capacity = get_installed_capacity_by(df, year)
             annual_cap.append(installed_capacity)
-        caps = pd.DataFrame(list(zip(all_years, annual_cap)), columns =['Year', 'Cummulative Capacity'])
+        caps = pd.DataFrame(list(zip(all_years, annual_cap)), columns =['Year', 'Cumulative Capacity'])
         caps.to_excel(writer, sheet_name=str(s), index=False)
         #c = pd.concat([c, caps], axis=1)
         #c.to_csv('results/all-capacities.csv')
@@ -154,9 +154,10 @@ if __name__ == '__main__':
         plot_throughput(throughput, fname=savefig)
 
         # Save the project dataframe
-        #csv_name = 'results/' + s + '_data.csv'
-        #df.to_csv(csv_name)
+        csv_name = 'results/' + s + '_data.csv'
+        df.to_csv(csv_name)
 
 writer.close()
 
+plot_deployment()
 plot_summary(scenarios, capacity_2045)

@@ -326,3 +326,41 @@ def plot_summary(scenarios, capacity_list):
     ax1.legend(handles=handles, loc='upper right');
 
     fig.savefig('results/summary.png', bbox_inches='tight', dpi=300)
+
+def plot_deployment():
+    levels = ['Baseline', 'Moderate', 'Expanded']
+
+    schedules = 'library/pipeline/deployment-schedules.xlsx'
+
+    for s in levels:
+        df = pd.read_excel(schedules, sheet_name = s, index_col='Year')
+
+        if s=='Baseline':
+            regions = df[['Central CA','Northern CA']].copy()
+            total = regions.sum(axis=1)[2045]
+        elif s=='Moderate':
+            regions = df[['Central CA','Northern CA', 'Central OR', 'Southern OR']].copy()
+            total = regions.sum(axis=1)[2045]
+        elif s =='Expanded':
+            regions = df[['Central CA','Northern CA', 'Central OR', 'Southern OR', 'Southern WA']].copy()
+            total = regions.sum(axis=1)[2045]
+
+        fig = plt.figure(figsize=(9, 6))
+        ax = fig.add_subplot(111)
+        ax2 = fig.add_subplot(111)
+
+        ## Stacked area charts
+        ax = regions.plot.area()
+        plt.title('Deployment for the '+ s +' Scenario: ' + str(int(total/1000)) + ' GW')
+        ax.set_ylabel('Cumulative installed capacity')
+
+        area_fname = 'results/Deployment/' + s + '_stacked.png'
+        plt.savefig(area_fname, bbox_inches='tight')
+
+        ## Simple line graphs
+        ax2 = regions.plot.line()
+        plt.title('Deployment for the '+ s +' Scenario: ' + str(int(total/1000)) + ' GW')
+        ax2.set_ylabel('Cumulative installed capacity')
+
+        line_fname = 'results/Deployment/' + s + '_line.png'
+        plt.savefig(line_fname, bbox_inches='tight')
