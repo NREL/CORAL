@@ -7,55 +7,73 @@ allocations = {
         "mooring_install_vessel": ('example_support_vessel', 2),
         "port": [('Humboldt', 1), ('Coos Bay', 0)]
             },
-    'Baseline-limited-ports': {
-        "support_vessel": ('example_support_vessel', 2),
-        "towing_vessel": ('example_towing_vessel', 2),
-        "mooring_install_vessel": ('example_support_vessel', 2),
-        "port": [('Humboldt', 1), ('Coos Bay', 0)]
+    'Baseline-low': {
+        "support_vessel": ('example_support_vessel', 99),
+        "towing_vessel": ('example_towing_vessel', 99),
+        "mooring_install_vessel": ('example_support_vessel', 99),
+        "port": [('Humboldt', 1)]
             },
     ## Saturate # of vessels to iterate on port constraints and wait for data on actual numbers
-    'Baseline-South-CA': {
+    'Baseline-mid-SC': {
+        "support_vessel": ('example_support_vessel', 99),
+        "towing_vessel": ('example_towing_vessel', 99),
+        "mooring_install_vessel": ('example_support_vessel', 99),
+        "port": [('Long Beach', 0), ('Humboldt', 1)]
+            },
+    'Baseline-mid-CC': {
+        "support_vessel": ('example_support_vessel', 99),
+        "towing_vessel": ('example_towing_vessel', 99),
+        "mooring_install_vessel": ('example_support_vessel', 99),
+        "port": [('Port of San Luis', 0), ('Humboldt', 1)]
+            },
+    'Moderate-low': {
+        "support_vessel": ('example_support_vessel', 99),
+        "towing_vessel": ('example_towing_vessel', 99),
+        "mooring_install_vessel": ('example_support_vessel', 99),
+        "port": [('Humboldt', 1), ('Coos Bay', 0)]
+            },
+    'Moderate-mid-SC': {
         "support_vessel": ('example_support_vessel', 99),
         "towing_vessel": ('example_towing_vessel', 99),
         "mooring_install_vessel": ('example_support_vessel', 99),
         "port": [('Long Beach', 0), ('Humboldt', 1), ('Coos Bay', 0)]
             },
-    'Baseline-Central-CA': {
-        "support_vessel": ('example_support_vessel', 99),
-        "towing_vessel": ('example_towing_vessel', 99),
-        "mooring_install_vessel": ('example_support_vessel', 99),
-        "port": [('Port of San Luis', 0), ('Humboldt', 1), ('Coos Bay', 0)]
-            },
-    'Expanded-all-ports': {
+    'Expanded-high': {
         "support_vessel": ('example_support_vessel', 99),
         "towing_vessel": ('example_towing_vessel', 99),
         "mooring_install_vessel": ('example_support_vessel', 99),
         "port": [('Long Beach', 0), ('Humboldt', 1), ('Coos Bay', 0), ('Grays Harbor', 0), ('Port of San Luis', 0)]
-            },
+            }
 }
 
 future_allocations = {
     'test': [
         ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]]
         ],
-    'Baseline-limited-ports': [
-        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
+    'Baseline-low': [
         ["port", "Humboldt", [dt.datetime(2030, 1, 1)]]
         ],
-    'Baseline-South-CA': [
+    'Baseline-mid-SC': [
+        ["port", "Long Beach", [dt.datetime(2032, 1, 1)]],
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
+        ["port", "Long Beach", [dt.datetime(2034, 1, 1)]]
+    ],
+    'Baseline-mid-CC': [
+        ["port", "Port of San Luis", [dt.datetime(2037, 1, 1)]],
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]]
+    ],
+    'Moderate-low':[
+        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
+        ["port", "Coos Bay", [dt.datetime(2038, 1, 1)]]
+    ],
+    'Moderate-mid-SC':[
         ["port", "Long Beach", [dt.datetime(2032, 1, 1)]],
         ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
         ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
-        ["port", "Long Beach", [dt.datetime(2034, 1, 1)]],
         ["port", "Coos Bay", [dt.datetime(2038, 1, 1)]]
     ],
-    'Baseline-Central-CA': [
-        ["port", "Port of San Luis", [dt.datetime(2037, 1, 1)]],
-        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
-        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
-        ["port", "Coos Bay", [dt.datetime(2038, 1, 1)]]
-    ],
-    'Expanded-all-ports':[
+    'Expanded-high':[
         ["port", "Long Beach", [dt.datetime(2032, 1, 1)]],
         ["port", "Port of San Luis", [dt.datetime(2037, 1, 1)]],
         ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
