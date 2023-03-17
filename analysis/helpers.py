@@ -1,33 +1,27 @@
 import datetime as dt
 
 allocations = {
-    'test': {
-        "support_vessel": ('example_support_vessel', 2),
-        "towing_vessel": ('example_towing_vessel', 2),
-        "mooring_install_vessel": ('example_support_vessel', 2),
-        "port": [('Humboldt', 1), ('Coos Bay', 0)]
-            },
     'Baseline-limited-ports': {
-        "support_vessel": ('example_support_vessel', 2),
+        "ahts_vessel": ('example_ahts_vessel', 2),
         "towing_vessel": ('example_towing_vessel', 2),
         "mooring_install_vessel": ('example_support_vessel', 2),
         "port": [('Humboldt', 1), ('Coos Bay', 0)]
             },
     ## Saturate # of vessels to iterate on port constraints and wait for data on actual numbers
     'Baseline-South-CA': {
-        "support_vessel": ('example_support_vessel', 99),
+        "ahts_vessel": ('example_ahts_vessel', 99),
         "towing_vessel": ('example_towing_vessel', 99),
         "mooring_install_vessel": ('example_support_vessel', 99),
         "port": [('Long Beach', 0), ('Humboldt', 1), ('Coos Bay', 0)]
             },
     'Baseline-Central-CA': {
-        "support_vessel": ('example_support_vessel', 99),
+        "ahts_vessel": ('example_ahts_vessel', 99),
         "towing_vessel": ('example_towing_vessel', 99),
         "mooring_install_vessel": ('example_support_vessel', 99),
         "port": [('Port of San Luis', 0), ('Humboldt', 1), ('Coos Bay', 0)]
             },
     'Expanded-all-ports': {
-        "support_vessel": ('example_support_vessel', 99),
+        "ahts_vessel": ('example_ahts_vessel', 99),
         "towing_vessel": ('example_towing_vessel', 99),
         "mooring_install_vessel": ('example_support_vessel', 99),
         "port": [('Long Beach', 0), ('Humboldt', 1), ('Coos Bay', 0), ('Grays Harbor', 0), ('Port of San Luis', 0)]
@@ -35,9 +29,6 @@ allocations = {
 }
 
 future_allocations = {
-    'test': [
-        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]]
-        ],
     'Baseline-limited-ports': [
         ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
         ["port", "Humboldt", [dt.datetime(2030, 1, 1)]]

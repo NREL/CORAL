@@ -21,6 +21,8 @@ base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
 weather_year = 2011  # TODO: Find a representative year from 2010 - 2018
+weather_on = True
+
 savedir = "results"
 
 # O&M port activities
@@ -39,7 +41,10 @@ if __name__ == '__main__':
     weather_year['port_in_use'] = False
     weather_year.loc[(weather_year.index > OM_start_date) & (weather_year.index < OM_end_date), "port_in_use"] = True
 
-    weather_long = pd.concat([weather_year]*50) # Need a 50+ year time series for limited port scenario (should be the longest)
+    if weather_on == True:
+        weather_long = pd.concat([weather_year]*50) # Need a 50+ year time series for limited port scenario (should be the longest)
+    else:
+        weather_long = None
 
 
     for s in scenarios:

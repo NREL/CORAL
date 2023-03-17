@@ -11,8 +11,8 @@ landfall:
 # Vessels
 oss_install_vessel: example_support_vessel
 towing_vessel_groups:
-  station_keeping_vessels: 1
   towing_vessels: 2
+  ahts_vessels: 1
   num_groups: 3
 # Port characteristics: define in individual port YAMLs
 
