@@ -15,8 +15,8 @@ from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_col
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
-#scenarios = ['Baseline-low', 'Baseline-mid-SC', 'Baseline-mid-CC', 'Moderate-low', 'Moderate-mid-SC', 'Expanded-high']
-scenarios = ['Baseline-low']
+scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
+# scenarios = ['Baseline-low']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
