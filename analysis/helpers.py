@@ -1,5 +1,11 @@
 import datetime as dt
 
+target_capacity = {
+    'Baseline': 25,
+    'Moderate': 35,
+    'Expanded': 55
+}
+
 allocations = {
     'Baseline-Low': {
         "ahts_vessel": ('example_ahts_vessel', 99),

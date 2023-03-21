@@ -10,13 +10,13 @@ import datetime as dt
 from datetime import datetime
 initialize_library("library")
 
-from helpers import allocations, future_allocations
+from helpers import allocations, future_allocations, target_capacity
 from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors, plot_summary, plot_deployment
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
 scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-# scenarios = ['Baseline-low']
+# scenarios = ['Baseline-Low']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
@@ -160,4 +160,5 @@ if __name__ == '__main__':
 writer.close()
 
 plot_deployment()
-plot_summary(scenarios, capacity_2045)
+percent_installed = plot_summary(scenarios, capacity_2045, target_capacity)
+print(percent_installed)
