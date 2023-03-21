@@ -176,7 +176,7 @@ def plot_gantt(df, manager, color_by, fname=None):
 
     ax.axvline(dt.date(2046, 1, 1), lw=0.5, ls="--", color="#2C3E50", zorder=6)
     installed_capacity_46 = get_installed_capacity_by(df, 2046)
-    ax.text(x=dt.date(2053, 1, 1), y=15, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW. \nCapacity installed \nby end of 2045: \n{installed_capacity_46/1000:,.3} GW.", fontsize=30, color="#2C3E50")
+    ax.text(x=dt.date(2048, 1, 1), y=(0.75*num_proj), s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW. \nCapacity installed \nby end of 2045: \n{installed_capacity_46/1000:,.3} GW.", fontsize=30, color="#2C3E50")
 
     fig.subplots_adjust(left=0.25)
 

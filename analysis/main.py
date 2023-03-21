@@ -16,7 +16,7 @@ from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_col
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
 scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-# scenarios = ['Baseline-low']
+#scenarios = ['Expanded-High']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
@@ -95,6 +95,8 @@ if __name__ == '__main__':
         assign_colors(df, color_by)
         plot_gantt(df, manager, color_by, fname=savefig)
 
+        # STOP HERE FOR VESSELS NUMBERS
+
         # Plot first five projects:
         first_projs = 5
         filename_nt = 'Near-term-Gantt/' + str(s) + '_nt_gantt'
@@ -154,8 +156,8 @@ if __name__ == '__main__':
         plot_throughput(throughput, fname=savefig)
 
         # Save the project dataframe
-        csv_name = 'results/' + s + '_data.csv'
-        df.to_csv(csv_name)
+#        csv_name = 'results/' + s + '_data.csv'
+#        df.to_csv(csv_name)
 
 writer.close()
 
