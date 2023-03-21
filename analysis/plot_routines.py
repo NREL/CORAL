@@ -331,7 +331,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
         for label, color in zip(['Target capacity','Installed capacity', 'Investment'], ['#28DA16','#3C2AC0', '#FFA319'])
     ]
 
-    ax1.legend(handles=handles, loc='upper right');
+    ax1.legend(handles=handles, loc='upper left');
 
     fig.savefig('results/summary.png', bbox_inches='tight', dpi=300)
 
