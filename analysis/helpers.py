@@ -1,12 +1,12 @@
 import datetime as dt
 
+target_capacity = {
+    'Baseline': 25,
+    'Moderate': 35,
+    'Expanded': 55
+}
+
 allocations = {
-    'test': {
-        "support_vessel": ('example_support_vessel', 2),
-        "towing_vessel": ('example_towing_vessel', 2),
-        "mooring_install_vessel": ('example_support_vessel', 2),
-        "port": [('Humboldt', 1), ('Coos Bay', 0)]
-            },
     'Baseline-Low': {
         "ahts_vessel": ('example_ahts_vessel', 7),
         "towing_vessel": ('example_towing_vessel', 7),

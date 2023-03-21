@@ -285,7 +285,7 @@ def assign_colors(df, color_by):
     df["delay color"] = delay_color
     df["install color"] = install_color
 
-def plot_summary(scenarios, capacity_list):
+def plot_summary(scenarios, capacity_list, target_capacity):
     by_year = 2045
 
     inv_df = pd.read_excel('library/investments/scenario-investments.xlsx', sheet_name='schedule')
@@ -298,15 +298,23 @@ def plot_summary(scenarios, capacity_list):
     fig = plt.figure(figsize=(6, 4))
     ax1 = fig.add_subplot(111)
     ax2 = ax1.twinx()
-    width = 0.4
+    width = 0.25
 
     x_ind = np.arange(len(scenarios))
 
-    ax1.bar(x_ind-width/2, capacity_list, width, color='#3C2AC0')
-    ax1.set_ylabel('Installed capaciy by end of ' + str(by_year) + ', GW')
+    target = [target_capacity[s.split('-')[0]] for s in scenarios]
+    ax1.bar(x_ind-width, target, width, color='#28DA16')
+
+    ax1.bar(x_ind, capacity_list, width, color='#3C2AC0')
+    ax1.set_ylabel('Installed capacity by end of ' + str(by_year) + ', GW')
     ax1.set_ylim([0,60])
 
-    ax2.bar(x_ind+width/2, invest_list, width, color='#FFA319')
+    perc_installed = [int(round(100*c/t,0)) for c,t in zip(capacity_list, target)]
+    perc_installed_dict = {}
+    for s,p in zip(scenarios, perc_installed):
+        perc_installed_dict[s] = p
+
+    ax2.bar(x_ind+width, invest_list, width, color='#FFA319')
     ax2.set_ylabel('Investment required, $M')
     ax2.set_ylim([0,8000])
     ax2.get_yaxis().set_major_formatter(
@@ -320,12 +328,14 @@ def plot_summary(scenarios, capacity_list):
 
     handles = [
         Patch(facecolor=color, label=label)
-        for label, color in zip(['Installed capacity', 'Investment'], ['#3C2AC0', '#FFA319'])
+        for label, color in zip(['Target capacity','Installed capacity', 'Investment'], ['#28DA16','#3C2AC0', '#FFA319'])
     ]
 
-    ax1.legend(handles=handles, loc='upper right');
+    ax1.legend(handles=handles, loc='upper left');
 
     fig.savefig('results/summary.png', bbox_inches='tight', dpi=300)
+
+    return perc_installed_dict
 
 def plot_deployment():
     levels = ['Baseline', 'Moderate', 'Expanded']
