@@ -9,11 +9,13 @@ landfall:
   interconnection_distance: 3
   trench_length: 2
 # Vessels
-oss_install_vessel: example_support_vessel
 towing_vessel_groups:
   towing_vessels: 2
   ahts_vessels: 1
   num_groups: 3
+array_cable_install_vessel: _shared_pool_:example_cable_lay_vessel
+export_cable_install_vessel: _shared_pool_:example_cable_lay_vessel
+oss_install_vessel: example_support_vessel # assume that this is towed out with a anchor handling vessel
 # Port characteristics: define in individual port YAMLs
 
 # Module Specific
@@ -26,8 +28,26 @@ mooring_system_design:
     num_lines: 3 # int
     anchor_type: "Drag Embedment"
 
+array_system_design:
+  cables:
+  - XLPE_185mm_66kV
+  - XLPE_630mm_66kV
+export_system_design:
+  cables: HVDC_2000mm_320kV
+  percent_added_length: 0.0
+substation_design:
+  floating_oss: True
+
 # Configured Phases
 design_phases:
 - OffshoreSubstationDesign  # SemiTaut Mooring seems to need this
+- ArraySystemDesign
+- ElectricalDesign
 install_phases:
+  ArrayCableInstallation: !!python/tuple
+  - MooredSubInstallation
+  - 0.5 # Start array cable installation when 50% of floaters are installed
+  ExportCableInstallation: !!python/tuple
+  - FloatingSubstationInstallation
+  - 1 # Start OSS installation when 25% of cable installation is complete
   FloatingSubstationInstallation: 0
