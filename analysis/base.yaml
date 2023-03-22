@@ -45,11 +45,10 @@ design_phases:
 - ArraySystemDesign
 - ElectricalDesign
 install_phases:
-  # ArrayCableInstallation: !!python/tuple
-  # - MooredSubInstallation
-  # - 0.5 # Start array cable installation when 50% of floaters are installed
-  # ExportCableInstallation: 0
-  # FloatingSubstationInstallation: !!python/tuple
-  # - ExportCableInstallation
-  # - 0.25 # Start OSS installation when 25% of cable installation is complete
-  FloatingSubstationInstallation: 0
+  ArrayCableInstallation: !!python/tuple
+  - MooredSubInstallation
+  - 0.5 # Start array cable installation when 50% of floaters are installed
+  ExportCableInstallation: 0
+  FloatingSubstationInstallation: !!python/tuple
+  - ExportCableInstallation
+  - 0.25 # Start OSS installation when 25% of cable installation is complete
