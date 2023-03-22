@@ -17,6 +17,8 @@ CATEGORY_MAP = {
     "ahts_vessel": "vessels",
     "towing_vessel": "vessels",
     "mooring_install_vessel": "vessels",
+    "array_cable_install_vessel": "vessels",
+    "export_cable_install_vessel": "vessels"
 }
 
 
