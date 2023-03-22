@@ -11,6 +11,8 @@ allocations = {
         "ahts_vessel": ('example_ahts_vessel', 7),
         "towing_vessel": ('example_towing_vessel', 7),
         "mooring_install_vessel": ('example_support_vessel', 7),
+        "array_cable_install_vessel": ('example_cable_lay_vessel', 99),
+        "export_cable_install_vessel": ("example_cable_lay_vessel",99),
         "port": [('Humboldt', 1)]
             },
     ## Saturate # of vessels to iterate on port constraints and wait for data on actual numbers
@@ -18,30 +20,40 @@ allocations = {
         "ahts_vessel": ('example_ahts_vessel', 7),
         "towing_vessel": ('example_towing_vessel', 7),
         "mooring_install_vessel": ('example_support_vessel', 7),
+        "array_cable_install_vessel": ('example_cable_lay_vessel', 99),
+        "export_cable_install_vessel": ("example_cable_lay_vessel",99),
         "port": [('Long Beach', 0), ('Humboldt', 1)]
             },
     'Baseline-Mid (CC)': {
         "ahts_vessel": ('example_ahts_vessel', 7),
         "towing_vessel": ('example_towing_vessel', 7),
         "mooring_install_vessel": ('example_support_vessel', 7),
+        "array_cable_install_vessel": ('example_cable_lay_vessel', 99),
+        "export_cable_install_vessel": ("example_cable_lay_vessel",99),
         "port": [('Port of San Luis', 0), ('Humboldt', 1)]
             },
     'Moderate-Low': {
         "ahts_vessel": ('example_ahts_vessel', 7),
         "towing_vessel": ('example_towing_vessel', 7),
         "mooring_install_vessel": ('example_support_vessel', 7),
+        "array_cable_install_vessel": ('example_cable_lay_vessel', 99),
+        "export_cable_install_vessel": ("example_cable_lay_vessel",99),
         "port": [('Humboldt', 1), ('Coos Bay', 0)]
             },
     'Moderate-Mid (SC)': {
         "ahts_vessel": ('example_ahts_vessel', 7),
         "towing_vessel": ('example_towing_vessel', 7),
         "mooring_install_vessel": ('example_support_vessel', 7),
+        "array_cable_install_vessel": ('example_cable_lay_vessel', 99),
+        "export_cable_install_vessel": ("example_cable_lay_vessel",99),
         "port": [('Long Beach', 0), ('Humboldt', 1), ('Coos Bay', 0)]
             },
     'Expanded-High': {
         "ahts_vessel": ('example_ahts_vessel', 7),
         "towing_vessel": ('example_towing_vessel', 7),
         "mooring_install_vessel": ('example_support_vessel', 7),
+        "array_cable_install_vessel": ('example_cable_lay_vessel', 99),
+        "export_cable_install_vessel": ("example_cable_lay_vessel",99),
         "port": [('Long Beach', 0), ('Humboldt', 1), ('Coos Bay', 0), ('Grays Harbor', 0), ('Port of San Luis', 0)]
             }
 }

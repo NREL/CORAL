@@ -67,7 +67,7 @@ if __name__ == '__main__':
             dfs.append(data)
 
         actions_df = pd.concat(dfs)
-        actions_df = actions_df.groupby(['agent','action', 'phase']).sum(numeric_only=True)['duration']
+        # actions_df = actions_df.groupby(['agent','action', 'phase', 'time']).sum(numeric_only=True)['duration']
 
         actions_filename = str(s) + '_agent_actions_sum.csv'
 
