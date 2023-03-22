@@ -15,14 +15,14 @@ from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_col
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
-scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-# scenarios = ['Baseline-Low']
+# scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
+scenarios = ['Baseline-Low']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
 
 weather_year = 2011
-weather_on = True
+weather_on = False
 
 savedir = "results"
 
