@@ -212,7 +212,7 @@ class FloatingPipeline(BasePipeline):
 
             config["site"]["depth"] = data["depth"]
             config["site"]["distance_to_landfall"] = data["distance_to_shore"]
-            # Distance calculation?
+            config['site']['distance'] = data['distance_to_site_(km)']
 
             if self.regional_ports:
                 config["port"] = ":".join(

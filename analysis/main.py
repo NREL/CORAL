@@ -28,7 +28,7 @@ savedir = "results"
 
 # O&M port activities
 OM_start_date = datetime(weather_year, 6, 1, 00, 00, 00)
-OM_end_date = datetime(weather_year, 8, 1, 00, 00, 00)
+OM_end_date = datetime(weather_year, 6, 15, 00, 00, 00)
 
 capacity_2045=[]
 writer = pd.ExcelWriter("results/cumulative-capacity.xlsx")
@@ -67,11 +67,15 @@ if __name__ == '__main__':
             dfs.append(data)
 
         actions_df = pd.concat(dfs)
-        # actions_df = actions_df.groupby(['agent','action', 'phase', 'time']).sum(numeric_only=True)['duration']
 
-        actions_filename = str(s) + '_agent_actions_sum.csv'
-
+        actions_filename = str(s) + '_actions_log.csv'
         actions_df.to_csv(savedir + '/Actions/' + actions_filename)
+
+        # Group action log by agent and action
+        actions_df = actions_df.groupby(['agent','action', 'phase', 'time']).sum(numeric_only=True)['duration']
+
+        agents_filename = str(s) + '_agent_actions_sum.csv'
+        actions_df.to_csv(savedir + '/Actions/' + agents_filename)
 
         # Plot and save results, assign ports to projects
         df = pd.DataFrame(manager.logs).iloc[::-1]
