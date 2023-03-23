@@ -16,7 +16,7 @@ from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_col
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
 scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-#scenarios = ['Expanded-High']
+#scenarios = ['Baseline-Low']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
@@ -72,10 +72,10 @@ if __name__ == '__main__':
         actions_df.to_csv(savedir + '/Actions/' + actions_filename)
 
         # Group action log by agent and action
-        actions_df = actions_df.groupby(['agent','action', 'phase', 'time']).sum(numeric_only=True)['duration']
+        agents_df = actions_df.groupby(['agent','action', 'phase', 'time']).sum(numeric_only=True)['duration']
 
         agents_filename = str(s) + '_agent_actions_sum.csv'
-        actions_df.to_csv(savedir + '/Actions/' + agents_filename)
+        agents_df.to_csv(savedir + '/Actions/' + agents_filename)
 
         # Plot and save results, assign ports to projects
         df = pd.DataFrame(manager.logs).iloc[::-1]
