@@ -49,11 +49,11 @@ allocations = {
         "port": [('Long Beach', 0), ('Humboldt', 1), ('Coos Bay', 0)]
             },
     'Expanded-High': {
-        "ahts_vessel": ('example_ahts_vessel', 7),
-        "towing_vessel": ('example_towing_vessel', 7),
-        "mooring_install_vessel": ('example_support_vessel', 7),
-        "array_cable_install_vessel": ('example_cable_lay_vessel', 7),
-        "export_cable_install_vessel": ("example_cable_lay_vessel",7),
+        "ahts_vessel": ('example_ahts_vessel', 9),
+        "towing_vessel": ('example_towing_vessel', 18),
+        "mooring_install_vessel": ('example_support_vessel', 9),
+        "array_cable_install_vessel": ('example_cable_lay_vessel', 99),
+        "export_cable_install_vessel": ("example_cable_lay_vessel",99),
         "port": [('Long Beach', 0), ('Humboldt', 1), ('Coos Bay', 0), ('Grays Harbor', 0), ('Port of San Luis', 0)]
             }
 }
@@ -83,11 +83,23 @@ future_allocations = {
         ["port", "Coos Bay", [dt.datetime(2038, 1, 1)]]
     ],
     'Expanded-High':[
-        ["port", "Long Beach", [dt.datetime(2032, 1, 1)]],
-        ["port", "Port of San Luis", [dt.datetime(2037, 1, 1)]],
-        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
-        ["port", "Grays Harbor", [dt.datetime(2039, 1, 1)]],
         ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
-        ["port", "Coos Bay", [dt.datetime(2038, 1, 1)]]
+        ["port", "Long Beach", [dt.datetime(2032, 1, 1)]],
+        ["port", "Long Beach", [dt.datetime(2032, 1, 1)]], # Add 2nd line
+        # ["port", "Long Beach", [dt.datetime(2035, 1, 1)]], # Add 3rd line
+        ["port", "Port of San Luis", [dt.datetime(2037, 1, 1)]],
+        ["port", "Coos Bay", [dt.datetime(2032, 1, 1)]],
+        ["port", "Coos Bay", [dt.datetime(2035, 1, 1)]], # Accelerate from 2038
+        ["port", "Grays Harbor", [dt.datetime(2035, 1, 1)]], # Accelerate from 2039
+        ["port", "Grays Harbor", [dt.datetime(2035, 1, 1)]], # Add 2nd line
+        # ["port", "Grays Harbor", [dt.datetime(2035, 1, 1)]], # Add 3rd line/2nd port 
     ]
 }
+
+# Findings: port adds. Note that GH is closer to Humobldt than LB
+# Base - 49.5
+# Add LB3 (2035) - 50.3
+# Add GH3 (2035) - 51.8
+# Findings: vessels
+# 8-16-8-99-99: 47.6
+# 9-18-9-99-99: 49.5 
