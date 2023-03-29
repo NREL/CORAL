@@ -34,8 +34,8 @@ def mysave(fig, froot, mode='png'):
                     dpi=dpiVal, bbox_extra_artists=legs)
 
 
-titleSize = 24  # 40 #38
-axLabelSize = 20  # 38 #36
+titleSize = 40  # 24 #38
+axLabelSize = 38  # 20 #36
 tickLabelSize = 18  # 30 #28
 ganttTick = 18
 legendSize = tickLabelSize + 2
@@ -123,24 +123,41 @@ def initFigAxis(figx=28, figy=21):
     ax = fig.add_subplot(111)
     return fig, ax
 
-def plot_gantt(df, manager, color_by, fname=None):
+def plot_gantt(df, manager, s, color_by, fname=None):
     fig, ax = initFigAxis()
 
     assign_colors(df, color_by)
 
+    df = df.sort_values(by = ['region', 'Date Finished'], ascending=False)
+
+    regions = df.region.unique()
+
+    counts = []
+    count = 0
+    for r in regions:
+            count += df['region'].value_counts()[r]
+            counts.append((r, count))
+    total = count
+
+    df["y-labels"] = df['region']
+    order = range(1, total+1)
+    df['order'] = order
+
+    df.to_csv('gantt_df.csv')
+
     df["Date Finished"].plot(kind="barh", ax=ax, zorder=4, label="Project Time", color=df["install color"])
-    df["Date Started"].plot(kind="barh", color=df["delay color"], ax=ax, zorder=4, label="Project Delay", hatch="////", linewidth=0.5)
+    df["Date Started"].plot(kind="barh", color=df["delay color"], ax=ax, zorder=4, label="Project Delay", hatch="//", linewidth=0.5)
     df["Date Initialized"].plot(kind='barh', ax=ax, zorder=4, label="__nolabel__", color='w')
 
-    region_base_handles = [
-    Patch(facecolor=color, label=label)
-    for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD'])
-    ]
+#    region_base_handles = [
+#    Patch(facecolor=color, label=label)
+#    for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD'])
+#    ]
 
-    region_exp_handles = [
-    Patch(facecolor=color, label=label)
-    for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA', 'Southern WA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD', '#27AE60'])
-    ]
+#    region_exp_handles = [
+#    Patch(facecolor=color, label=label)
+#    for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA', 'Southern WA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD', '#27AE60'])
+#    ]
 
     port_base_handles = [
     Patch(facecolor=color, label=label)
@@ -160,26 +177,33 @@ def plot_gantt(df, manager, color_by, fname=None):
         handles = region_base_handles
 
     # Plot formatting
+
     ax.set_xlabel("")
     ax.set_ylabel("")
-    _ = ax.set_yticklabels(df['region'])
+#    _ = ax.set_yticklabels(df['region'])
+    _ = ax.set_yticklabels(df['y-labels'])
 
-    plt.yticks(fontsize=6)
+
+    plt.yticks(fontsize=10)
     plt.plot((0, 0), (0, 30), scaley = False)
-    ax.legend(handles=handles, loc = 'upper right')
+
     ax.set_xlim(manager._start - dt.timedelta(days=30), dt.date(2060, 6, 1) + dt.timedelta(days=30))
     num_proj = len(df['Date Finished'])
 
-    ax.axvline(dt.date(2031, 1, 1), lw=0.5, ls="--", color="#2C3E50", zorder=6)
-    installed_capacity_31 = get_installed_capacity_by(df, 2031)
-    #ax.text(x=dt.date(2051, 1, 1), y=25, s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW", fontsize=20, color="#2C3E50")
+    ax.axvline(dt.date(2046, 1, 1), lw=0.5, color="#2C3E50", zorder=6)
+    installed_capacity_46 = get_installed_capacity_by(df, 2046)/1000
+#    ax.text(x=dt.date(2048, 1, 1), y=(0.95*num_proj), s=f"Capacity installed \nby end of 2045: \n{installed_capacity_46/1000:,.3} GW", fontsize=30, color="#2C3E50")
 
-    ax.axvline(dt.date(2046, 1, 1), lw=0.5, ls="--", color="#2C3E50", zorder=6)
-    installed_capacity_46 = get_installed_capacity_by(df, 2046)
-    ax.text(x=dt.date(2048, 1, 1), y=(0.75*num_proj), s=f"Capacity installed \nby end of 2030: \n{installed_capacity_31/1000:,.3} GW. \nCapacity installed \nby end of 2045: \n{installed_capacity_46/1000:,.3} GW.", fontsize=30, color="#2C3E50")
+    ax.text(x=dt.date(2028, 1, 1), y=17, s="test text", fontsize = 40)
+    for line in counts:
+        ax.axhline(y = (line[1] - 0.5), ls="--", color="#979A9A")
 
     fig.subplots_adjust(left=0.25)
 
+    plt.title(f"{s} scenario: \n{installed_capacity_46:,.3} GW of capacity installed by the end of 2045")
+
+    if s == 'Baseline-Mid (SC)':
+        ax.legend(handles=handles, loc = 'upper right', fontsize = 100)
 
     if fname is not None:
         myformat(ax)
