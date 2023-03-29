@@ -92,7 +92,7 @@ future_allocations = {
         ["port", "Coos Bay", [dt.datetime(2035, 1, 1)]], # Accelerate from 2038
         ["port", "Grays Harbor", [dt.datetime(2035, 1, 1)]], # Accelerate from 2039
         ["port", "Grays Harbor", [dt.datetime(2035, 1, 1)]], # Add 2nd line
-        # ["port", "Grays Harbor", [dt.datetime(2035, 1, 1)]], # Add 3rd line/2nd port 
+        # ["port", "Grays Harbor", [dt.datetime(2035, 1, 1)]], # Add 3rd line/2nd port
     ]
 }
 
@@ -102,4 +102,4 @@ future_allocations = {
 # Add GH3 (2035) - 51.8
 # Findings: vessels
 # 8-16-8-99-99: 47.6
-# 9-18-9-99-99: 49.5 
+# 9-18-9-99-99: 49.5

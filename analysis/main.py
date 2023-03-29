@@ -20,6 +20,8 @@ scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
+# Weather data used by ORBIT for Northern CA:
+#weather_path = "library/weather/northern_CA_swh_150m.csv"
 
 weather_year = 2011
 weather_on = True
@@ -28,7 +30,7 @@ savedir = "results"
 
 # O&M port activities
 OM_start_date = datetime(weather_year, 6, 1, 00, 00, 00)
-OM_end_date = datetime(weather_year, 8, 1, 00, 00, 00)
+OM_end_date = datetime(weather_year, 6, 15, 00, 00, 00)
 
 capacity_2045=[]
 writer = pd.ExcelWriter("results/cumulative-capacity.xlsx")
