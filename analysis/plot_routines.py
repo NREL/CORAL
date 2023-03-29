@@ -135,15 +135,16 @@ def plot_gantt(df, manager, s, color_by, fname=None):
     counts = []
     count = 0
     for r in regions:
-            count += df['region'].value_counts()[r]
-            counts.append((r, count))
+        count += df['region'].value_counts()[r]
+        counts.append((r, count))
     total = count
 
     df["y-labels"] = df['region']
     order = range(1, total+1)
     df['order'] = order
+    df.set_index('order', inplace=True)
 
-    df.to_csv('gantt_df.csv')
+    #df.to_csv('gantt_df.csv')
 
     df["Date Finished"].plot(kind="barh", ax=ax, zorder=4, label="Project Time", color=df["install color"])
     df["Date Started"].plot(kind="barh", color=df["delay color"], ax=ax, zorder=4, label="Project Delay", hatch="//", linewidth=0.5)
@@ -177,12 +178,9 @@ def plot_gantt(df, manager, s, color_by, fname=None):
         handles = region_base_handles
 
     # Plot formatting
-
     ax.set_xlabel("")
     ax.set_ylabel("")
-#    _ = ax.set_yticklabels(df['region'])
-    _ = ax.set_yticklabels(df['y-labels'])
-
+    _ = ax.set_yticklabels(df['region'])
 
     plt.yticks(fontsize=10)
     plt.plot((0, 0), (0, 30), scaley = False)
@@ -194,7 +192,6 @@ def plot_gantt(df, manager, s, color_by, fname=None):
     installed_capacity_46 = get_installed_capacity_by(df, 2046)/1000
 #    ax.text(x=dt.date(2048, 1, 1), y=(0.95*num_proj), s=f"Capacity installed \nby end of 2045: \n{installed_capacity_46/1000:,.3} GW", fontsize=30, color="#2C3E50")
 
-    ax.text(x=dt.date(2028, 1, 1), y=17, s="test text", fontsize = 40)
     for line in counts:
         ax.axhline(y = (line[1] - 0.5), ls="--", color="#979A9A")
 
