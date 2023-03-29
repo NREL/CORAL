@@ -25,8 +25,12 @@ scenarios = ['Baseline-Low']
 >>>>>>> 3a7e548 (reformat gantt charts)
 =======
 scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
+<<<<<<< HEAD
 #scenarios = ['Baseline-Low']
 >>>>>>> 7f0086e (reformat gantt charts)
+=======
+#scenarios = ['Expanded-High']
+>>>>>>> b5cb1bc (reformat gantt charts)
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"

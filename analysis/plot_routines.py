@@ -36,7 +36,7 @@ def mysave(fig, froot, mode='png'):
 
 titleSize = 40  # 24 #38
 axLabelSize = 38  # 20 #36
-tickLabelSize = 18  # 30 #28
+tickLabelSize = 40  # 18 #28
 ganttTick = 18
 legendSize = tickLabelSize + 2
 textSize = legendSize - 2
@@ -118,7 +118,7 @@ def myformat(ax, linewidth=linewidth, xticklabel=tickLabelSize, yticklabel=tickL
     else:
         myformat(ax)
 
-def initFigAxis(figx=28, figy=21):
+def initFigAxis(figx=32, figy=24):
     fig = plt.figure(figsize=(figx, figy))
     ax = fig.add_subplot(111)
     return fig, ax
@@ -139,12 +139,14 @@ def plot_gantt(df, manager, s, color_by, fname=None):
         counts.append((r, count))
     total = count
 
-    df["y-labels"] = df['region']
+    df["y-labels"] = "    "
     order = range(1, total+1)
     df['order'] = order
     df.set_index('order', inplace=True)
 
-    #df.to_csv('gantt_df.csv')
+    for group in counts:
+        index = group[1]
+        df.at[index - 2, 'y-labels'] = group[0]
 
     df["Date Finished"].plot(kind="barh", ax=ax, zorder=4, label="Project Time", color=df["install color"])
     df["Date Started"].plot(kind="barh", color=df["delay color"], ax=ax, zorder=4, label="Project Delay", hatch="//", linewidth=0.5)
@@ -180,7 +182,7 @@ def plot_gantt(df, manager, s, color_by, fname=None):
     # Plot formatting
     ax.set_xlabel("")
     ax.set_ylabel("")
-    _ = ax.set_yticklabels(df['region'])
+    _ = ax.set_yticklabels(df['y-labels'])
 
     plt.yticks(fontsize=10)
     plt.plot((0, 0), (0, 30), scaley = False)
