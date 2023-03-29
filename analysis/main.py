@@ -15,27 +15,8 @@ from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_col
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-# scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-scenarios = ['Expanded-High']
-=======
-#scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-scenarios = ['Baseline-Low']
->>>>>>> 3a7e548 (reformat gantt charts)
-=======
 scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-<<<<<<< HEAD
-#scenarios = ['Baseline-Low']
->>>>>>> 7f0086e (reformat gantt charts)
-=======
 #scenarios = ['Expanded-High']
->>>>>>> b5cb1bc (reformat gantt charts)
-=======
-# scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-scenarios = ['Expanded-High']
->>>>>>> 50b83bc (reformat gantt charts)
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
