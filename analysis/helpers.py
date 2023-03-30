@@ -9,7 +9,7 @@ target_capacity = {
 allocations = {
     'Baseline-Low': {
         "ahts_vessel": ('example_ahts_vessel', 2),
-        "towing_vessel": ('example_towing_vessel', 2),
+        "towing_vessel": ('example_towing_vessel', 4),
         "mooring_install_vessel": ('example_support_vessel', 2),
         "array_cable_install_vessel": ('example_cable_lay_vessel', 2),
         "export_cable_install_vessel": ("example_cable_lay_vessel",2),
@@ -18,7 +18,7 @@ allocations = {
     ## Saturate # of vessels to iterate on port constraints and wait for data on actual numbers
     'Baseline-Mid (SC)': {
         "ahts_vessel": ('example_ahts_vessel', 4),
-        "towing_vessel": ('example_towing_vessel', 4),
+        "towing_vessel": ('example_towing_vessel', 8),
         "mooring_install_vessel": ('example_support_vessel', 4),
         "array_cable_install_vessel": ('example_cable_lay_vessel', 4),
         "export_cable_install_vessel": ("example_cable_lay_vessel", 4),
@@ -26,7 +26,7 @@ allocations = {
             },
     'Baseline-Mid (CC)': {
         "ahts_vessel": ('example_ahts_vessel', 3),
-        "towing_vessel": ('example_towing_vessel', 3),
+        "towing_vessel": ('example_towing_vessel', 6),
         "mooring_install_vessel": ('example_support_vessel', 3),
         "array_cable_install_vessel": ('example_cable_lay_vessel', 3),
         "export_cable_install_vessel": ("example_cable_lay_vessel",3),
@@ -34,7 +34,7 @@ allocations = {
             },
     'Moderate-Low': {
         "ahts_vessel": ('example_ahts_vessel', 4),
-        "towing_vessel": ('example_towing_vessel', 4),
+        "towing_vessel": ('example_towing_vessel', 8),
         "mooring_install_vessel": ('example_support_vessel', 4),
         "array_cable_install_vessel": ('example_cable_lay_vessel', 4),
         "export_cable_install_vessel": ("example_cable_lay_vessel",4),
@@ -42,7 +42,7 @@ allocations = {
             },
     'Moderate-Mid (SC)': {
         "ahts_vessel": ('example_ahts_vessel', 5),
-        "towing_vessel": ('example_towing_vessel', 5),
+        "towing_vessel": ('example_towing_vessel', 10),
         "mooring_install_vessel": ('example_support_vessel', 5),
         "array_cable_install_vessel": ('example_cable_lay_vessel', 5),
         "export_cable_install_vessel": ("example_cable_lay_vessel",5),
@@ -52,8 +52,8 @@ allocations = {
         "ahts_vessel": ('example_ahts_vessel', 9),
         "towing_vessel": ('example_towing_vessel', 18),
         "mooring_install_vessel": ('example_support_vessel', 9),
-        "array_cable_install_vessel": ('example_cable_lay_vessel', 99),
-        "export_cable_install_vessel": ("example_cable_lay_vessel",99),
+        "array_cable_install_vessel": ('example_cable_lay_vessel', 9),
+        "export_cable_install_vessel": ("example_cable_lay_vessel",9),
         "port": [('Long Beach', 0), ('Humboldt', 1), ('Coos Bay', 0), ('Grays Harbor', 0), ('Port of San Luis', 0)]
             }
 }
