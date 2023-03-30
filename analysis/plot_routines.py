@@ -152,25 +152,11 @@ def plot_gantt(df, manager, s, color_by, fname=None):
     df["Date Started"].plot(kind="barh", color=df["delay color"], ax=ax, zorder=4, label="Project Delay", hatch="//", linewidth=0.5)
     df["Date Initialized"].plot(kind='barh', ax=ax, zorder=4, label="__nolabel__", color='w')
 
-#    region_base_handles = [
-#    Patch(facecolor=color, label=label)
-#    for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD'])
-#    ]
-
-#    region_exp_handles = [
-#    Patch(facecolor=color, label=label)
-#    for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA', 'Southern WA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD', '#27AE60'])
-#    ]
-
     port_base_handles = [
     Patch(facecolor=color, label=label)
-    for label, color in zip(['Humboldt', 'Coos Bay', 'Port San Luis', 'Long Beach', 'Grays Harbor'], ['#F39C12', '#16A085', '#C0392B', '#8E44AD', '#3498DB'])
+    #for label, color in zip(['Humboldt', 'Coos Bay', 'Port San Luis', 'Long Beach', 'Grays Harbor'], ['#F39C12', '#16A085', '#C0392B', '#8E44AD', '#3498DB'])
+    for label, color in zip(['Northern CA', 'Central OR', 'Central Coast (CA)', 'Southern CA', 'Southern WA'], ['#F39C12', '#16A085', '#C0392B', '#8E44AD', '#3498DB'])
     ]
-
-    #port_exp_handles = [
-    #Patch(facecolor=color, label=label)
-    #for label, color in zip(['Central OR', 'Southern OR', 'Northern CA', 'Central CA', 'Southern WA'], ['#3498DB', '#F1C40F', '#E74C3C', '#8E44AD', '#27AE60'])
-    #]
 
     if "Southern WA" in df[color_by]:
         handles = region_exp_handles
@@ -192,7 +178,6 @@ def plot_gantt(df, manager, s, color_by, fname=None):
 
     ax.axvline(dt.date(2046, 1, 1), lw=0.5, color="#2C3E50", zorder=6)
     installed_capacity_46 = get_installed_capacity_by(df, 2046)/1000
-#    ax.text(x=dt.date(2048, 1, 1), y=(0.95*num_proj), s=f"Capacity installed \nby end of 2045: \n{installed_capacity_46/1000:,.3} GW", fontsize=30, color="#2C3E50")
 
     for line in counts:
         ax.axhline(y = (line[1] - 0.5), ls="--", color="#979A9A")
@@ -202,7 +187,8 @@ def plot_gantt(df, manager, s, color_by, fname=None):
     plt.title(f"{s} scenario: \n{installed_capacity_46:,.3} GW of capacity installed by the end of 2045")
 
     if s == 'Baseline-Mid (SC)':
-        ax.legend(handles=handles, loc = 'upper right', fontsize = 100)
+        ax.legend(handles=handles, loc = 'upper right', fontsize = 80)
+        ax.text(x=dt.date(2046, 6, 1), y=(0.1*num_proj), s=f"End of 2045", fontsize=30, color="#2C3E50")
 
     if fname is not None:
         myformat(ax)
@@ -367,6 +353,7 @@ def plot_deployment():
 
     for s in levels:
         df = pd.read_excel(schedules, sheet_name = s, index_col='Year')
+        df = df/1000
 
         if s=='Baseline':
             regions = df[['Central CA','Northern CA']].copy()
@@ -384,16 +371,16 @@ def plot_deployment():
 
         ## Stacked area charts
         ax = regions.plot.area()
-        plt.title('Deployment for the '+ s +' Scenario: ' + str(int(total/1000)) + ' GW')
-        ax.set_ylabel('Cumulative installed capacity')
+        plt.title('Deployment for the '+ s +' Scenario: ' + str(int(total)) + ' GW')
+        ax.set_ylabel('Cumulative installed capacity, GW')
 
         area_fname = 'results/Deployment/' + s + '_stacked.png'
         plt.savefig(area_fname, bbox_inches='tight')
 
         ## Simple line graphs
         ax2 = regions.plot.line()
-        plt.title('Deployment for the '+ s +' Scenario: ' + str(int(total/1000)) + ' GW')
-        ax2.set_ylabel('Cumulative installed capacity')
+        plt.title('Deployment for the '+ s +' Scenario: ' + str(int(total)) + ' GW')
+        ax2.set_ylabel('Cumulative installed capacity, GW')
 
         line_fname = 'results/Deployment/' + s + '_line.png'
         plt.savefig(line_fname, bbox_inches='tight')
