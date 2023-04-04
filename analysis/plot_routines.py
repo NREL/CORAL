@@ -187,7 +187,7 @@ def plot_gantt(df, manager, s, color_by, fname=None):
     plt.title(f"{s} scenario: \n{installed_capacity_46:,.3} GW of capacity installed by the end of 2045")
 
     if s == 'Baseline-Mid (SC)':
-        ax.legend(handles=handles, loc = 'upper right', fontsize = 80)
+        ax.legend(handles=handles, loc = 'upper right', fontsize = 80, title="S&I Port")
         ax.text(x=dt.date(2046, 6, 1), y=(0.1*num_proj), s=f"End of 2045", fontsize=30, color="#2C3E50")
 
     if fname is not None:
@@ -356,23 +356,23 @@ def plot_deployment():
         df = df/1000
 
         if s=='Baseline':
-            regions = df[['Central CA','Northern CA']].copy()
+            regions = df[['Central CA', 'Northern CA']].copy()
             total = regions.sum(axis=1)[2045]
         elif s=='Moderate':
-            regions = df[['Central CA','Northern CA', 'Central OR', 'Southern OR']].copy()
+            regions = df[['Central CA', 'Northern CA', 'Central OR', 'Southern OR']].copy()
             total = regions.sum(axis=1)[2045]
         elif s =='Expanded':
-            regions = df[['Central CA','Northern CA', 'Central OR', 'Southern OR', 'Southern WA']].copy()
+            regions = df[['Central CA', 'Northern CA', 'Central OR', 'Southern OR', 'Southern WA']].copy()
             total = regions.sum(axis=1)[2045]
 
-        fig = plt.figure(figsize=(9, 6))
-        ax = fig.add_subplot(111)
-        ax2 = fig.add_subplot(111)
+        fig, ax = initFigAxis()
+        ax2 = ax.twinx()
 
         ## Stacked area charts
         ax = regions.plot.area()
         plt.title('Deployment for the '+ s +' Scenario: ' + str(int(total)) + ' GW')
         ax.set_ylabel('Cumulative installed capacity, GW')
+        ax.legend(loc = 'upper left')
 
         area_fname = 'results/Deployment/' + s + '_stacked.png'
         plt.savefig(area_fname, bbox_inches='tight')
@@ -380,7 +380,13 @@ def plot_deployment():
         ## Simple line graphs
         ax2 = regions.plot.line()
         plt.title('Deployment for the '+ s +' Scenario: ' + str(int(total)) + ' GW')
+        ax2.set_ylim([0,25])
         ax2.set_ylabel('Cumulative installed capacity, GW')
+        ax2.legend(loc = 'upper left')
 
         line_fname = 'results/Deployment/' + s + '_line.png'
         plt.savefig(line_fname, bbox_inches='tight')
+
+        myformat(ax)
+        myformat(ax2)
+        #mysave(fig, line_fname)
