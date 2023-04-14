@@ -11,7 +11,7 @@ from datetime import datetime
 initialize_library("library")
 
 from helpers import allocations, future_allocations, target_capacity
-from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors, plot_summary, plot_deployment
+from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors, plot_summary, plot_deployment, plot_investments, plot_per_dollar, plot_new_gantt
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
@@ -20,6 +20,7 @@ scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
+inv_path = 'library/investments/scenario-investments.xlsx'
 # Weather data used by ORBIT for Northern CA:
 #weather_path = "library/weather/northern_CA_swh_150m.csv"
 
@@ -33,7 +34,8 @@ OM_start_date = datetime(weather_year, 6, 1, 00, 00, 00)
 OM_end_date = datetime(weather_year, 6, 15, 00, 00, 00)
 
 capacity_2045=[]
-writer = pd.ExcelWriter("results/cumulative-capacity.xlsx")
+cap_dir = 'results/cumulative-capacity.xlsx'
+writer = pd.ExcelWriter(cap_dir)
 
 if __name__ == '__main__':
 
@@ -99,7 +101,9 @@ if __name__ == '__main__':
         # color_by = "region" or "port"
         color_by = "port"
         assign_colors(df, color_by)
-        plot_gantt(df, manager, s, color_by, fname=savefig)
+        #plot_gantt(df, manager, s, color_by, fname=savefig)
+        inv_df = pd.read_excel(inv_path, sheet_name='schedule')
+        plot_new_gantt(df, manager, s, color_by, inv_df, fname=savefig)
 
         # Plot first five projects:
         first_projs = 5
@@ -167,4 +171,5 @@ writer.close()
 
 plot_deployment()
 percent_installed = plot_summary(scenarios, capacity_2045, target_capacity)
-print(percent_installed)
+
+plot_per_dollar(scenarios, percent_installed, target_capacity)

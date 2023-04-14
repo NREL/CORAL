@@ -312,9 +312,17 @@ def plot_summary(scenarios, capacity_list, target_capacity):
     x_ind = np.arange(len(scenarios))
 
     target = [target_capacity[s.split('-')[0]] for s in scenarios]
-    ax1.bar(x_ind-width, target, width, color='#28DA16')
 
-    ax1.bar(x_ind, capacity_list, width, color='#3C2AC0')
+    ax1.plot(x_ind, target, width, color='#229954', marker='*', linestyle="", zorder=0)
+
+    not_installed = []
+    for goal, actual in zip(target, capacity_list):
+        dif = goal-actual
+        not_installed.append(dif)
+    df_installs = pd.DataFrame(list(zip(scenarios, capacity_list, not_installed)), columns=['Scenarios', 'Installed', 'Not installed'])
+
+    ax1.bar(x_ind, capacity_list, width, color='#2874A6', zorder=5)
+
     ax1.set_ylabel('Installed capacity by end of ' + str(by_year) + ', GW')
     ax1.set_ylim([0,60])
 
@@ -323,9 +331,9 @@ def plot_summary(scenarios, capacity_list, target_capacity):
     for s,p in zip(scenarios, perc_installed):
         perc_installed_dict[s] = p
 
-    ax2.bar(x_ind+width, invest_list, width, color='#FFA319')
-    ax2.set_ylabel('Investment required, $M')
-    ax2.set_ylim([0,8000])
+    ax2.bar(x_ind+width, invest_list, width, color='#F39C12')
+    ax2.set_ylabel('Investment required, $B')
+    ax2.set_ylim([0,11.5])
     ax2.get_yaxis().set_major_formatter(
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
@@ -333,16 +341,14 @@ def plot_summary(scenarios, capacity_list, target_capacity):
     plot_names = scenarios
     ax1.set_xticklabels(plot_names, rotation=45)
 
-    plt.title('made with dummy investment numbers!', color = 'red')
-
     handles = [
         Patch(facecolor=color, label=label)
-        for label, color in zip(['Target capacity','Installed capacity', 'Investment'], ['#28DA16','#3C2AC0', '#FFA319'])
+        for label, color in zip(['Target capacity', 'Installed capacity', 'Investment'], ['#229954', '#2874A6', '#F39C12'])
     ]
 
     ax1.legend(handles=handles, loc='upper left');
 
-    fig.savefig('results/summary.png', bbox_inches='tight', dpi=300)
+    fig.savefig('results/Summary Plots/summary.png', bbox_inches='tight', dpi=300)
 
     return perc_installed_dict
 
@@ -390,3 +396,158 @@ def plot_deployment():
         myformat(ax)
         myformat(ax2)
         #mysave(fig, line_fname)
+
+def plot_investments(cap_dir, scenarios):
+    fig, ax1 = initFigAxis()
+    ax2 = ax1.twinx()
+
+    inv_df = pd.read_excel('library/investments/scenario-investments.xlsx', sheet_name='schedule')
+
+    for s in scenarios:
+        ax1.plot(inv_df['Year'], inv_df[s])
+
+        inst_df = pd.read_excel(cap_dir, sheet_name = s)
+        ax2.plot(inst_df['Year'], inst_df['Cumulative Capacity'])
+
+    inv_name = 'results/Summary Plots/investments.png'
+    plt.savefig(inv_name, bbox_inches='tight')
+
+def plot_per_dollar(scenarios, percent_installed, target_capacity):
+    fig = plt.figure(figsize=(6, 4))
+    ax1 = fig.add_subplot(111)
+    ax2 = ax1.twinx()
+    width = 0.25
+
+    x_ind = np.arange(len(scenarios))
+    ax1_ind = np.arange(0, 126, 25)
+    ax2_ind = np.arange(0, 11, 1)
+    width = 0.25
+
+    target = [target_capacity[s.split('-')[0]] for s in scenarios]
+
+    percents = []
+    for s in percent_installed:
+        percents.append(percent_installed[s])
+
+    installed = []
+    for t, p in zip(target, percents):
+        actual_inst = t*p/100
+        installed.append(actual_inst)
+
+    inv_df = pd.read_excel('library/investments/scenario-investments.xlsx', sheet_name='schedule')
+    inv_df = inv_df.set_index('Year')
+    by_year = 2045
+    invest_list = []
+    for s in scenarios:
+        invest_list.append(inv_df[s][by_year])
+
+    per_dollar = []
+    for c, d in zip(installed, invest_list):
+        installed_per_dollar = c/d
+        per_dollar.append(installed_per_dollar)
+
+    ax1.bar(x_ind, percents, width, color='#9B59B6')
+    ax1.set_ylabel('Percent of target capacity installed')
+    ax1.set_xticks(x_ind)
+    plot_names = scenarios
+    ax1.set_xticklabels(plot_names, rotation=45)
+    ax1.set_ylim([0,130])
+
+    ax2.bar(x_ind+width, per_dollar, width, color='#F1C40F')
+    ax2.set_ylabel('MW installed per million dollars invested')
+    ax2.set_ylim([0,11])
+
+    handles = [
+        Patch(facecolor=color, label=label)
+        for label, color in zip(['Percent of target', 'Investment efficiency'], ['#9B59B6', '#F1C40F'])
+    ]
+
+    ax1.legend(handles=handles, loc='upper left')
+
+    figsave = 'results/Summary Plots/per_dollar.png'
+    fig.savefig(figsave, bbox_inches='tight', dpi=300)
+
+def plot_new_gantt(df, manager, s, color_by, inv_df, fname=None):
+    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=False, sharey=False, gridspec_kw={'height_ratios': [3,1]})
+    fig.subplots_adjust(hspace=0)
+
+    assign_colors(df, color_by)
+
+    df = df.sort_values(by = ['region', 'Date Finished'], ascending=False)
+
+    regions = df.region.unique()
+
+    counts = []
+    count = 0
+    for r in regions:
+        count += df['region'].value_counts()[r]
+        counts.append((r, count))
+    total = count
+
+    df["y-labels"] = "   "
+    order = range(1, total+1)
+    df['order'] = order
+    df.set_index('order', inplace=True)
+
+    for group in counts:
+        index = group[1]
+        df.at[index - 2, 'y-labels'] = group[0]
+
+    df["Date Finished"].plot(kind="barh", ax=ax1, zorder=4, label="Project Time", color=df["install color"])
+    df["Date Started"].plot(kind="barh", color=df["delay color"], ax=ax1, zorder=4, label="Project Delay", hatch="////", linewidth=0.5)
+    df["Date Initialized"].plot(kind='barh', ax=ax1, zorder=4, label="__nolabel__", color='w')
+
+    port_base_handles = [
+    Patch(facecolor=color, label=label)
+    #for label, color in zip(['Humboldt', 'Coos Bay', 'Port San Luis', 'Long Beach', 'Grays Harbor'], ['#F39C12', '#16A085', '#C0392B', '#8E44AD', '#3498DB'])
+    for label, color in zip(['Northern CA', 'Central OR', 'CA Central Coast', 'Southern CA', 'Southern WA', 'Cumulative \ninvestment'], ['#F39C12', '#16A085', '#C0392B', '#8E44AD', '#3498DB', 'r'])
+    ]
+
+    if "Southern WA" in df[color_by]:
+        handles = region_exp_handles
+    elif color_by == "port":
+        handles = port_base_handles
+    else:
+        handles = region_base_handles
+
+    # Plot formatting
+    ax1.set_xlabel(" ")
+    ax1.set_ylabel("Region")
+    _ = ax1.set_yticklabels(df['y-labels'])
+    ax1.xaxis.set_tick_params(labelbottom=False)
+
+
+    plt.yticks(fontsize=10)
+    plt.plot((0, 0), (0, 30), scaley = False)
+
+    #ax1.set_xlim(manager._start - dt.timedelta(days=30), dt.date(2060, 6, 1) + dt.timedelta(days=30))
+    ax1.set_xlim(dt.date(2027, 1, 1) + dt.timedelta(days=30), dt.date(2061, 1, 1) + dt.timedelta(days=30))
+    num_proj = len(df['Date Finished'])
+
+    ax1.axvline(dt.date(2046, 2, 1), lw=0.5, color="#2C3E50", zorder=6)
+    installed_capacity_46 = get_installed_capacity_by(df, 2046)/1000
+
+    for line in counts:
+        ax1.axhline(y = (line[1] - 0.5), ls="--", color="#979A9A")
+
+    fig.subplots_adjust(left=0.25)
+
+    inv_df.set_index("Year", inplace=True)
+    invested = inv_df.at[2045, s]
+
+    ax1.set_title(f"{s} scenario: {invested:,.3} billion USD \ninvested and {installed_capacity_46:,.3} GW installed by the end of 2045")
+
+    if s == 'Baseline-Mid (SC)':
+        ax1.legend(handles=handles, loc = 'upper right', title="S&I Port")
+        ax1.text(x=dt.date(2046, 6, 1), y=(0.1*num_proj), s=f"End of 2045", color="#2C3E50")
+
+    inv_df[s].plot.line(ax=ax2, color='r')
+    ax2.axvline(x=2046, lw=0.5, color='#2C3E50')
+    ax2.set_xlim(2027, 2061)
+    ax2.set_ylim(0, 11)
+    ax2.set_ylabel("Investment \n(million USD)")
+
+
+    if fname is not None:
+        mysave(fig, fname)
+        plt.close()
