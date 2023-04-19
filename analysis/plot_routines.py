@@ -415,12 +415,12 @@ def plot_investments(cap_dir, scenarios):
 def plot_per_dollar(scenarios, percent_installed, target_capacity):
     fig = plt.figure(figsize=(6, 4))
     ax1 = fig.add_subplot(111)
-    ax2 = ax1.twinx()
+    #ax2 = ax1.twinx()
     width = 0.25
 
     x_ind = np.arange(len(scenarios))
-    ax1_ind = np.arange(0, 126, 25)
-    ax2_ind = np.arange(0, 11, 1)
+    ax1_ind = np.arange(0, 31, 5)
+    #ax2_ind = np.arange(0, 11, 1)
     width = 0.25
 
     target = [target_capacity[s.split('-')[0]] for s in scenarios]
@@ -442,27 +442,29 @@ def plot_per_dollar(scenarios, percent_installed, target_capacity):
         invest_list.append(inv_df[s][by_year])
 
     per_dollar = []
-    for c, d in zip(installed, invest_list):
-        installed_per_dollar = c/d
-        per_dollar.append(installed_per_dollar)
+    for c, d in zip(percents, invest_list):
+        percent_per_dollar = c/d
+        per_dollar.append(percent_per_dollar)
 
-    ax1.bar(x_ind, percents, width, color='#9B59B6')
-    ax1.set_ylabel('Percent of target capacity installed')
-    ax1.set_xticks(x_ind)
+    ax1.barh(scenarios, width=per_dollar, color='#9B59B6')
+    ax1.set_xlabel('Percent of target capacity installed per billion USD')
+#    ax1.set_xticks(ax1_ind)
     plot_names = scenarios
-    ax1.set_xticklabels(plot_names, rotation=45)
-    ax1.set_ylim([0,130])
+    ax1.set_yticklabels(plot_names)
+    ax1.set_xlim([0,31])
+    ax1.set_title('S&I port investment efficiency')
 
-    ax2.bar(x_ind+width, per_dollar, width, color='#F1C40F')
-    ax2.set_ylabel('MW installed per million dollars invested')
-    ax2.set_ylim([0,11])
+    #ax2.bar(x_ind+width, per_dollar, width, color='#F1C40F')
+    #ax2.set_ylabel('Percent of target installed per million dollars invested')
+    #ax2.set_ylim([0,11])
 
     handles = [
         Patch(facecolor=color, label=label)
-        for label, color in zip(['Percent of target', 'Investment efficiency'], ['#9B59B6', '#F1C40F'])
+#        for label, color in zip(['Percent of target', 'Investment efficiency'], ['#9B59B6', '#F1C40F'])
+        for label, color in zip(['Percent of target'], ['#9B59B6'])
     ]
 
-    ax1.legend(handles=handles, loc='upper left')
+#    ax1.legend(handles=handles, loc='upper left')
 
     figsave = 'results/Summary Plots/per_dollar.png'
     fig.savefig(figsave, bbox_inches='tight', dpi=300)
