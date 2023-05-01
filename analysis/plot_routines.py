@@ -451,7 +451,7 @@ def plot_per_dollar(scenarios, percent_installed, target_capacity):
 #    ax1.set_xticks(ax1_ind)
     plot_names = scenarios
     ax1.set_yticklabels(plot_names)
-    ax1.set_xlim([0,31])
+    ax1.set_xlim([0,21])
     ax1.set_title('S&I port investment efficiency')
 
     #ax2.bar(x_ind+width, per_dollar, width, color='#F1C40F')

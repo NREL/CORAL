@@ -1,40 +1,38 @@
 agent,phase,action,duration
-Array Cable Installation Vessel,ArrayCableInstallation,Delay,132420.0
-Array Cable Installation Vessel,ArrayCableInstallation,Lay/Bury Cable,18229.27963367423
-Array Cable Installation Vessel,ArrayCableInstallation,Load Cable,450.0
+Array Cable Installation Vessel,ArrayCableInstallation,Delay,117671.0
+Array Cable Installation Vessel,ArrayCableInstallation,Lay/Bury Cable,15242.30425837967
+Array Cable Installation Vessel,ArrayCableInstallation,Load Cable,300.0
 Array Cable Installation Vessel,ArrayCableInstallation,Lower Cable,1386.0
 Array Cable Installation Vessel,ArrayCableInstallation,Mobilize,1800.0
 Array Cable Installation Vessel,ArrayCableInstallation,Position Onsite,2772.0
 Array Cable Installation Vessel,ArrayCableInstallation,Prepare Cable,2772.0
 Array Cable Installation Vessel,ArrayCableInstallation,Pull In Cable,15246.0
 Array Cable Installation Vessel,ArrayCableInstallation,Terminate Cable,15246.0
-Array Cable Installation Vessel,ArrayCableInstallation,Transit,1179.647304347826
-Export Cable Installation Vessel,ExportCableInstallation,Delay,32976.0
-Export Cable Installation Vessel,ExportCableInstallation,Lay/Bury Cable,5945.813331285894
-Export Cable Installation Vessel,ExportCableInstallation,Load Cable,204.0
-Export Cable Installation Vessel,ExportCableInstallation,Lower Cable,34.0
+Array Cable Installation Vessel,ArrayCableInstallation,Transit,589.823652173913
+Export Cable Installation Vessel,ExportCableInstallation,Delay,37836.0
+Export Cable Installation Vessel,ExportCableInstallation,Lay/Bury Cable,8942.4935818345
+Export Cable Installation Vessel,ExportCableInstallation,Load Cable,150.0
+Export Cable Installation Vessel,ExportCableInstallation,Lower Cable,25.0
 Export Cable Installation Vessel,ExportCableInstallation,Mobilize,1800.0
-Export Cable Installation Vessel,ExportCableInstallation,Position Onsite,68.0
+Export Cable Installation Vessel,ExportCableInstallation,Position Onsite,50.0
 Export Cable Installation Vessel,ExportCableInstallation,Prepare Cable,25.0
 Export Cable Installation Vessel,ExportCableInstallation,Pull In Cable,275.0
 Export Cable Installation Vessel,ExportCableInstallation,Pull Winch,10.0
-Export Cable Installation Vessel,ExportCableInstallation,Raise Cable,4.5
-Export Cable Installation Vessel,ExportCableInstallation,Splice Cable,432.0
 Export Cable Installation Vessel,ExportCableInstallation,Terminate Cable,275.0
 Export Cable Installation Vessel,ExportCableInstallation,Tow Plow,10.0
-Export Cable Installation Vessel,ExportCableInstallation,Transit,321.7444347826087
+Export Cable Installation Vessel,ExportCableInstallation,Transit,147.45591304347826
 Floating Substation Installation Vessel,FloatingSubstationInstallation,Ballast to Operational Draft,300.0
 Floating Substation Installation Vessel,FloatingSubstationInstallation,Check Mooring Lines,1800.0
 Floating Substation Installation Vessel,FloatingSubstationInstallation,Connect Mooring Lines,3300.0
-Floating Substation Installation Vessel,FloatingSubstationInstallation,Delay,8262.0
-Floating Substation Installation Vessel,FloatingSubstationInstallation,Delay: Waiting on Completed Assembly,600.0
+Floating Substation Installation Vessel,FloatingSubstationInstallation,Delay,9972.0
+Floating Substation Installation Vessel,FloatingSubstationInstallation,Delay: Waiting on Substation Assembly,600.0
 Floating Substation Installation Vessel,FloatingSubstationInstallation,Install Mooring Line,672.87
 Floating Substation Installation Vessel,FloatingSubstationInstallation,Install Suction Pile Anchor,2322.87
 Floating Substation Installation Vessel,FloatingSubstationInstallation,Perform Mooring Site Survey,600.0
 Floating Substation Installation Vessel,FloatingSubstationInstallation,Position Onsite,100.0
 Floating Substation Installation Vessel,FloatingSubstationInstallation,Tow Substation to Site,565.2476666666666
 Floating Substation Installation Vessel,FloatingSubstationInstallation,Transit,339.1486
-Mooring System Installation Vessel,MooringSystemInstallation,Delay,59447.0
+Mooring System Installation Vessel,MooringSystemInstallation,Delay,58944.0
 Mooring System Installation Vessel,MooringSystemInstallation,Install Drag Embedment Anchor,68599.65000000001
 Mooring System Installation Vessel,MooringSystemInstallation,Install Mooring Line,18703.65
 Mooring System Installation Vessel,MooringSystemInstallation,Load Mooring System,6930.0
@@ -46,35 +44,35 @@ Onshore Construction,ExportCableInstallation,Onshore Construction,0.0
 Substation Assembly Line 1,FloatingSubstationInstallation,Attach Topside,1200.0
 Substation Assembly Line 1,FloatingSubstationInstallation,Substation Substructure Assembly,0.0
 Substructure Assembly Line 1,MooredSubInstallation,Substructure Assembly,232848.0
-Towing Group 1,MooredSubInstallation,Ballast to Operational Draft,2826.0
-Towing Group 1,MooredSubInstallation,Ballast to Towing Draft,2826.0
-Towing Group 1,MooredSubInstallation,Check Mooring Lines,2826.0
-Towing Group 1,MooredSubInstallation,"Connect Mooring Lines, Pre-tension and pre-stretch",9420.0
-Towing Group 1,MooredSubInstallation,Delay,41537.0
-Towing Group 1,MooredSubInstallation,Delay: No Completed Assemblies Available,217682.76623809524
-Towing Group 1,MooredSubInstallation,Position Substructure,942.0
-Towing Group 1,MooredSubInstallation,Tow Substructure,4616.818428571429
-Towing Group 1,MooredSubInstallation,Transit,5386.288166666666
-Towing Group 2,MooredSubInstallation,Ballast to Operational Draft,2772.0
-Towing Group 2,MooredSubInstallation,Ballast to Towing Draft,2772.0
-Towing Group 2,MooredSubInstallation,Check Mooring Lines,2772.0
-Towing Group 2,MooredSubInstallation,"Connect Mooring Lines, Pre-tension and pre-stretch",9240.0
-Towing Group 2,MooredSubInstallation,Delay,46250.0
-Towing Group 2,MooredSubInstallation,Delay: No Completed Assemblies Available,215355.16888095238
-Towing Group 2,MooredSubInstallation,Position Substructure,924.0
-Towing Group 2,MooredSubInstallation,Tow Substructure,4531.940285714286
-Towing Group 2,MooredSubInstallation,Transit,5287.263666666667
-Towing Group 3,MooredSubInstallation,Ballast to Operational Draft,2718.0
-Towing Group 3,MooredSubInstallation,Ballast to Towing Draft,2718.0
-Towing Group 3,MooredSubInstallation,Check Mooring Lines,2718.0
-Towing Group 3,MooredSubInstallation,"Connect Mooring Lines, Pre-tension and pre-stretch",9060.0
-Towing Group 3,MooredSubInstallation,Delay,39188.0
-Towing Group 3,MooredSubInstallation,Delay: No Completed Assemblies Available,218749.47504761905
-Towing Group 3,MooredSubInstallation,Position Substructure,906.0
-Towing Group 3,MooredSubInstallation,Tow Substructure,4466.491285714285
-Towing Group 3,MooredSubInstallation,Transit,5210.9065
-Turbine Assembly Line 1,MooredSubInstallation,Delay,81081.0
-Turbine Assembly Line 1,MooredSubInstallation,Delay: No Substructures in Wet Storage,5040.5
+Towing Group 1,MooredSubInstallation,Ballast to Operational Draft,2808.0
+Towing Group 1,MooredSubInstallation,Ballast to Towing Draft,2808.0
+Towing Group 1,MooredSubInstallation,Check Mooring Lines,2808.0
+Towing Group 1,MooredSubInstallation,"Connect Mooring Lines, Pre-tension and pre-stretch",9360.0
+Towing Group 1,MooredSubInstallation,Delay,45953.0
+Towing Group 1,MooredSubInstallation,Delay: No Completed Turbine Assemblies,228446.97064285714
+Towing Group 1,MooredSubInstallation,Position Substructure,936.0
+Towing Group 1,MooredSubInstallation,Tow Substructure,4607.954857142857
+Towing Group 1,MooredSubInstallation,Transit,5375.947333333333
+Towing Group 2,MooredSubInstallation,Ballast to Operational Draft,2796.0
+Towing Group 2,MooredSubInstallation,Ballast to Towing Draft,2796.0
+Towing Group 2,MooredSubInstallation,Check Mooring Lines,2796.0
+Towing Group 2,MooredSubInstallation,"Connect Mooring Lines, Pre-tension and pre-stretch",9320.0
+Towing Group 2,MooredSubInstallation,Delay,48151.0
+Towing Group 2,MooredSubInstallation,Delay: No Completed Turbine Assemblies,231430.59516666667
+Towing Group 2,MooredSubInstallation,Position Substructure,932.0
+Towing Group 2,MooredSubInstallation,Tow Substructure,4537.282
+Towing Group 2,MooredSubInstallation,Transit,5293.495666666667
+Towing Group 3,MooredSubInstallation,Ballast to Operational Draft,2712.0
+Towing Group 3,MooredSubInstallation,Ballast to Towing Draft,2712.0
+Towing Group 3,MooredSubInstallation,Check Mooring Lines,2712.0
+Towing Group 3,MooredSubInstallation,"Connect Mooring Lines, Pre-tension and pre-stretch",9040.0
+Towing Group 3,MooredSubInstallation,Delay,45009.0
+Towing Group 3,MooredSubInstallation,Delay: No Completed Turbine Assemblies,229389.34435714287
+Towing Group 3,MooredSubInstallation,Position Substructure,904.0
+Towing Group 3,MooredSubInstallation,Tow Substructure,4470.013142857143
+Towing Group 3,MooredSubInstallation,Transit,5215.015333333333
+Turbine Assembly Line 1,MooredSubInstallation,Delay,97841.0
+Turbine Assembly Line 1,MooredSubInstallation,Delay: No Substructures in Wet Storage,4803.0
 Turbine Assembly Line 1,MooredSubInstallation,Electrical Completion,99792.0
 Turbine Assembly Line 1,MooredSubInstallation,Lift and Attach Blade,14553.0
 Turbine Assembly Line 1,MooredSubInstallation,Lift and Attach Nacelle,16632.0

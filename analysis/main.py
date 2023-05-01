@@ -16,7 +16,7 @@ from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_col
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
 scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-#scenarios = ['Baseline-Mid (SC)']
+#scenarios = ['Baseline-Low']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
@@ -29,9 +29,9 @@ weather_on = True
 
 savedir = "results"
 
-# O&M port activities
+# O&M port activities (6 week window)
 OM_start_date = datetime(weather_year, 6, 1, 00, 00, 00)
-OM_end_date = datetime(weather_year, 6, 15, 00, 00, 00)
+OM_end_date = datetime(weather_year, 7, 15, 00, 00, 00)
 
 capacity_2045=[]
 cap_dir = 'results/cumulative-capacity.xlsx'
@@ -164,12 +164,12 @@ if __name__ == '__main__':
         plot_throughput(throughput, fname=savefig)
 
         # Save the project dataframe
-        #csv_name = 'results/' + s + '_data.csv'
-        #df.to_csv(csv_name)
+#        csv_name = 'results/' + s + '_data.csv'
+#        df.to_csv(csv_name)
 
 writer.close()
 
 plot_deployment()
 percent_installed = plot_summary(scenarios, capacity_2045, target_capacity)
-
+print(percent_installed)
 plot_per_dollar(scenarios, percent_installed, target_capacity)
