@@ -332,13 +332,13 @@ def plot_summary(scenarios, capacity_list, target_capacity):
         perc_installed_dict[s] = p
 
     ax2.bar(x_ind+width, invest_list, width, color='#F39C12')
-    ax2.set_ylabel('Investment required, $B')
+    ax2.set_ylabel('Investment required, $ billion')
     ax2.set_ylim([0,11.5])
     ax2.get_yaxis().set_major_formatter(
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     ax1.set_xticks(x_ind)
-    plot_names = scenarios
+    plot_names = ['Baseline-Low: \n2 sites', 'Baseline-Mid (SC): \n4 sites', 'Baseline-Mid (CC): \n3 sites', 'Moderate-Low: \n4 sites', 'Moderate-Mid (SC): \n5 sites', 'Expanded-High: \n9 sites']
     ax1.set_xticklabels(plot_names, rotation=45)
 
     handles = [
@@ -419,7 +419,7 @@ def plot_per_dollar(scenarios, percent_installed, target_capacity):
     width = 0.25
 
     x_ind = np.arange(len(scenarios))
-    ax1_ind = np.arange(0, 31, 5)
+    ax1_ind = np.arange(0, 11, 2)
     #ax2_ind = np.arange(0, 11, 1)
     width = 0.25
 
@@ -442,17 +442,17 @@ def plot_per_dollar(scenarios, percent_installed, target_capacity):
         invest_list.append(inv_df[s][by_year])
 
     per_dollar = []
-    for c, d in zip(percents, invest_list):
-        percent_per_dollar = c/d
-        per_dollar.append(percent_per_dollar)
+    for c, d in zip(installed, invest_list):
+        installed_per_dollar = c/d
+        per_dollar.append(installed_per_dollar)
 
     ax1.barh(scenarios, width=per_dollar, color='#9B59B6')
-    ax1.set_xlabel('Percent of target capacity installed per billion USD')
+    ax1.set_xlabel('GW of capacity installed per billion USD')
 #    ax1.set_xticks(ax1_ind)
     plot_names = scenarios
     ax1.set_yticklabels(plot_names)
-    ax1.set_xlim([0,21])
-    ax1.set_title('S&I port investment efficiency')
+    ax1.set_xlim([0,11])
+#    ax1.set_title('S&I port investment efficiency')
 
     #ax2.bar(x_ind+width, per_dollar, width, color='#F1C40F')
     #ax2.set_ylabel('Percent of target installed per million dollars invested')

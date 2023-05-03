@@ -9,7 +9,7 @@ target_capacity = {
 allocations = {
     'Baseline-Low': {
         "ahts_vessel": ('example_ahts_vessel', 2), # =6 AHTS (2 projects at a time, 3 groups per project, 1 AHTS per group)
-        "towing_vessel": ('example_towing_vessel', 2), # =12 tugs (2 projects at a time, 3 groups per project, 2 tugs per group)
+        "towing_vessel": ('example_towing_vessel', 2), # =18 tugs (2 projects at a time, 3 groups per project, 3 tugs per group)
         "mooring_install_vessel": ('example_support_vessel', 2), # =2 AHTS (2 projects at a time, 1 per project)
         "array_cable_install_vessel": ('example_array_cable_lay_vessel', 2), # =2 CLVs (2 projects at a time, 1 CLV per project)
         "export_cable_install_vessel": ("example_export_cable_lay_vessel", 2), # =2 CLVs (2 projects at a time, 1 CLV per project)
