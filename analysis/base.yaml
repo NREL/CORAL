@@ -21,7 +21,7 @@ oss_install_vessel: example_support_vessel # assume that this is towed out with 
 # Module Specific
 substructure:
   takt_time: 168
-  towing_speed: 7
+  towing_speed: 5.5
   unit_cost: 11757583 # USD, IEA VolutrnUS Reference Hull. Output from a run by Garret , Wisdem. 19 Aug 2022.
 
 mooring_system_design:
@@ -30,8 +30,7 @@ mooring_system_design:
 
 array_system_design:
   cables:
-  - XLPE_185mm_66kV
-  - XLPE_630mm_66kV
+   - XLPE_500mm_132kV_dynamic
 export_system_design:
   cables: HVDC_2000mm_320kV
   percent_added_length: 0.0
@@ -43,11 +42,18 @@ design_phases:
 - OffshoreSubstationDesign  # SemiTaut Mooring seems to need this
 - ArraySystemDesign
 - ElectricalDesign
+## from ORBIT:
+- SemiSubmersibleDesign
+- SemiTautMooringSystemDesign
 install_phases:
   ArrayCableInstallation: !!python/tuple
   - MooredSubInstallation
-  - 0.5 # Start array cable installation when 50% of floaters are installed
-  ExportCableInstallation: !!python/tuple
-  - FloatingSubstationInstallation
-  - 1 # Start OSS installation when 25% of cable installation is complete
-  FloatingSubstationInstallation: 0
+  - 0.25 # Start array cable installation when 40% of floaters are installed
+  ExportCableInstallation: 0
+  MooredSubInstallation: !!python/tuple
+  - MooringSystemInstallation
+  - 0.4 # Start substructure install when 50% of mooring lines installed
+  MooringSystemInstallation: 0
+  FloatingSubstationInstallation: !!python/tuple
+  - ExportCableInstallation
+  - 0.25 # Start OSS installation when 25% of cable installation is complete
