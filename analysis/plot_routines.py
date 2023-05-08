@@ -313,7 +313,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
 
     target = [target_capacity[s.split('-')[0]] for s in scenarios]
 
-    ax1.plot(x_ind, target, width, color='#229954', marker='*', linestyle="", zorder=0)
+    ax1.plot(x_ind-(width/2), target, width, color='#229954', marker='*', markersize = 15, linestyle="", zorder=0)
 
     not_installed = []
     for goal, actual in zip(target, capacity_list):
@@ -321,7 +321,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
         not_installed.append(dif)
     df_installs = pd.DataFrame(list(zip(scenarios, capacity_list, not_installed)), columns=['Scenarios', 'Installed', 'Not installed'])
 
-    ax1.bar(x_ind, capacity_list, width, color='#2874A6', zorder=5)
+    ax1.bar(x_ind-(width/2), capacity_list, width, color='#2874A6', zorder=5)
 
     ax1.set_ylabel('Installed capacity by end of ' + str(by_year) + ', GW')
     ax1.set_ylim([0,60])
@@ -331,7 +331,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
     for s,p in zip(scenarios, perc_installed):
         perc_installed_dict[s] = p
 
-    ax2.bar(x_ind+width, invest_list, width, color='#F39C12')
+    ax2.bar(x_ind+(width/2), invest_list, width, color='#F39C12')
     ax2.set_ylabel('Investment required, $ billion')
     ax2.set_ylim([0,11.5])
     ax2.get_yaxis().set_major_formatter(
@@ -339,6 +339,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
 
     ax1.set_xticks(x_ind)
     plot_names = ['Baseline-Low: \n2 sites', 'Baseline-Mid (SC): \n4 sites', 'Baseline-Mid (CC): \n3 sites', 'Moderate-Low: \n4 sites', 'Moderate-Mid (SC): \n5 sites', 'Expanded-High: \n9 sites']
+#    plot_names = scenarios
     ax1.set_xticklabels(plot_names, rotation=45)
 
     handles = [
