@@ -323,16 +323,17 @@ def plot_summary(scenarios, capacity_list, target_capacity):
 
     ax1.bar(x_ind-(width/2), capacity_list, width, color='#2874A6', zorder=5)
 
-    ax1.set_ylabel('Installed capacity by end of ' + str(by_year) + ', GW')
+    ax1.set_xlabel('Installation scenario', weight='bold')
+    ax1.set_ylabel('Installed capacity by end of ' + str(by_year) + ', GW', weight='bold')
     ax1.set_ylim([0,60])
 
-    perc_installed = [int(round(100*c/t,0)) for c,t in zip(capacity_list, target)]
+    perc_installed = [round(100*c/t, 3) for c,t in zip(capacity_list, target)]
     perc_installed_dict = {}
     for s,p in zip(scenarios, perc_installed):
         perc_installed_dict[s] = p
 
     ax2.bar(x_ind+(width/2), invest_list, width, color='#F39C12')
-    ax2.set_ylabel('Investment required, $ billion')
+    ax2.set_ylabel('Investment required, $ billion', weight='bold')
     ax2.set_ylim([0,11.5])
     ax2.get_yaxis().set_major_formatter(
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
@@ -340,7 +341,8 @@ def plot_summary(scenarios, capacity_list, target_capacity):
     ax1.set_xticks(x_ind)
     plot_names = ['Baseline-Low: \n2 sites', 'Baseline-Mid (SC): \n4 sites', 'Baseline-Mid (CC): \n3 sites', 'Moderate-Low: \n4 sites', 'Moderate-Mid (SC): \n5 sites', 'Expanded-High: \n9 sites']
 #    plot_names = scenarios
-    ax1.set_xticklabels(plot_names, rotation=45)
+    if len(scenarios) > 1:
+        ax1.set_xticklabels(plot_names, rotation=45)
 
     handles = [
         Patch(facecolor=color, label=label)
@@ -448,7 +450,8 @@ def plot_per_dollar(scenarios, percent_installed, target_capacity):
         per_dollar.append(installed_per_dollar)
 
     ax1.barh(scenarios, width=per_dollar, color='#9B59B6')
-    ax1.set_xlabel('GW of capacity installed per billion USD')
+    ax1.set_xlabel('GW of capacity installed per billion USD', weight='bold')
+    ax1.set_ylabel('Installation scenario', weight='bold')
 #    ax1.set_xticks(ax1_ind)
     plot_names = scenarios
     ax1.set_yticklabels(plot_names)
@@ -515,7 +518,7 @@ def plot_new_gantt(df, manager, s, color_by, inv_df, fname=None):
 
     # Plot formatting
     ax1.set_xlabel(" ")
-    ax1.set_ylabel("Region")
+    ax1.set_ylabel("Region", weight='bold')
     _ = ax1.set_yticklabels(df['y-labels'])
     ax1.xaxis.set_tick_params(labelbottom=False)
 
@@ -538,7 +541,7 @@ def plot_new_gantt(df, manager, s, color_by, inv_df, fname=None):
     inv_df.set_index("Year", inplace=True)
     invested = inv_df.at[2045, s]
 
-    ax1.set_title(f"{s} scenario: {invested:,.3} billion USD \ninvested and {installed_capacity_46:,.3} GW installed by the end of 2045")
+    ax1.set_title(f"{s} scenario: {invested:,.3} billion USD \ninvested and {installed_capacity_46:,.3} GW installed by the end of 2045", weight='bold')
 
     if s == 'Baseline-Mid (SC)':
         ax1.legend(handles=handles, loc = 'upper right', title="S&I Port")
@@ -548,9 +551,24 @@ def plot_new_gantt(df, manager, s, color_by, inv_df, fname=None):
     ax2.axvline(x=2046, lw=0.5, color='#2C3E50')
     ax2.set_xlim(2027, 2061)
     ax2.set_ylim(0, 11)
-    ax2.set_ylabel("Investment \n(million USD)")
+    ax2.set_ylabel("Investment \n(million USD)", weight='bold', rotation=90)
+    ax2.yaxis.set_label_coords(-.2, .5)
 
 
     if fname is not None:
         mysave(fig, fname)
         plt.close()
+
+def plot_total_investments(file_name):
+    df = pd.read_excel(file_name, sheet_name = 'total-investments')
+
+    fig = plt.figure(figsize=(7, 4))
+    ax = fig.add_subplot(111)
+    width=0.4
+
+    df.plot.bar(x = 'Scenario', y = ['S&I', 'MF', 'O&M'], color=['#2980B9', '#E67E22', '#F1C40F'], stacked = True, width=width, ax=ax, rot=45)
+
+    ax.set_ylabel('Investment ($ million)', weight='bold')
+    ax.set_xlabel('Scenario', weight='bold')
+    ax.set_title('Total scenario investments by type', weight='bold')
+    fig.savefig('results/Summary Plots/total-investments.png', bbox_inches='tight', dpi=300)

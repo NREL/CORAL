@@ -11,12 +11,12 @@ from datetime import datetime
 initialize_library("library")
 
 from helpers import allocations, future_allocations, target_capacity
-from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors, plot_summary, plot_deployment, plot_investments, plot_per_dollar, plot_new_gantt
+from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors, plot_summary, plot_deployment, plot_investments, plot_per_dollar, plot_new_gantt, plot_total_investments
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
 scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-#scenarios = ['Baseline-Low']
+#scenarios = ['Baseline-Mid (SC)']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
@@ -73,13 +73,13 @@ if __name__ == '__main__':
         actions_df = pd.concat(dfs)
 
         actions_filename = str(s) + '_actions_log.csv'
-        actions_df.to_csv(savedir + '/Actions/' + actions_filename)
+        actions_df.to_csv(savedir + '/Actions/Ungrouped_action_logs/' + actions_filename)
 
         # Group action log by agent and action
         agents_df = actions_df.groupby(['agent','phase', 'action']).sum(numeric_only=True)['duration']
 
         agents_filename = str(s) + '_agent_actions_sum.csv'
-        agents_df.to_csv(savedir + '/Actions/' + agents_filename)
+        agents_df.to_csv(savedir + '/Actions/Action_logs_for_emissions/' + agents_filename)
 
         # Plot and save results, assign ports to projects
         df = pd.DataFrame(manager.logs).iloc[::-1]
@@ -169,6 +169,8 @@ if __name__ == '__main__':
 
 writer.close()
 
+inv_fig = 'library/investments/total-investments.xlsx'
+plot_total_investments(inv_fig)
 plot_deployment()
 percent_installed = plot_summary(scenarios, capacity_2045, target_capacity)
 print(percent_installed)
