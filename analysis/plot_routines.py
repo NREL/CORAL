@@ -3,6 +3,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.text as txt
 import matplotlib.patches as mpatches
+import matplotlib.lines as mlines
 from matplotlib.patches import Patch
 import os
 import datetime as dt
@@ -312,8 +313,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
     x_ind = np.arange(len(scenarios))
 
     target = [target_capacity[s.split('-')[0]] for s in scenarios]
-
-    ax1.plot(x_ind-(width/2), target, width, color='#229954', marker='*', markersize = 15, linestyle="", zorder=0)
+    ax1.plot(x_ind-(width/2), target, width, color='#2ECC71', marker='*', markersize = 12, linestyle="", zorder=0)
 
     not_installed = []
     for goal, actual in zip(target, capacity_list):
@@ -339,17 +339,17 @@ def plot_summary(scenarios, capacity_list, target_capacity):
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     ax1.set_xticks(x_ind)
-    plot_names = ['Baseline-Low: \n2 sites', 'Baseline-Mid (SC): \n4 sites', 'Baseline-Mid (CC): \n3 sites', 'Moderate-Low: \n4 sites', 'Moderate-Mid (SC): \n5 sites', 'Expanded-High: \n9 sites']
-#    plot_names = scenarios
+    plot_names = ['Baseline-Low: \n2 sites', 'Baseline-Mid (SC): \n3 sites', 'Baseline-Mid (CC): \n3 sites', 'Moderate-Low: \n4 sites', 'Moderate-Mid (SC): \n5 sites', 'Expanded-High: \n9 sites']
+
+    #num = len(scenarios)
     if len(scenarios) > 1:
         ax1.set_xticklabels(plot_names, rotation=45)
 
-    handles = [
-        Patch(facecolor=color, label=label)
-        for label, color in zip(['Target capacity', 'Installed capacity', 'Investment'], ['#229954', '#2874A6', '#F39C12'])
-    ]
+    t_star = mlines.Line2D([], [], color='#2ECC71', marker='*', linestyle='None', markersize=12, label='Target capacity')
+    installed_blue = mlines.Line2D([], [], color='#2874A6', marker='s', linestyle='None', markersize=10, label='Installed capacity')
+    investment_orange = mlines.Line2D([], [], color='#F39C12', marker='s', linestyle='None', markersize=10, label='Investment')
 
-    ax1.legend(handles=handles, loc='upper left');
+    ax1.legend(handles=[t_star, installed_blue, investment_orange], loc='upper left');
 
     fig.savefig('results/Summary Plots/summary.png', bbox_inches='tight', dpi=300)
 
@@ -572,3 +572,35 @@ def plot_total_investments(file_name):
     ax.set_xlabel('Scenario', weight='bold')
     ax.set_title('Total scenario investments by type', weight='bold')
     fig.savefig('results/Summary Plots/total-investments.png', bbox_inches='tight', dpi=300)
+
+def plot_deployment2():
+    levels = ['Baseline scenario', 'Moderate scenario', 'Expanded scenario']
+
+    schedules = 'library/pipeline/deployment-schedules.xlsx'
+
+    b_df = pd.read_excel(schedules, sheet_name = 'Baseline', index_col='Year')
+    m_df = pd.read_excel(schedules, sheet_name = 'Moderate', index_col='Year')
+    e_df = pd.read_excel(schedules, sheet_name = 'Expanded', index_col='Year')
+
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharey=True, figsize=(10,12))
+
+    baseline = b_df[['Overall', 'Central CA', 'Northern CA']].copy()
+    moderate = m_df[['Overall', 'Central CA', 'Northern CA', 'Central OR', 'Southern OR']].copy()
+    expanded = e_df[['Overall', 'Central CA', 'Northern CA', 'Central OR', 'Southern OR', 'Southern WA']].copy()
+    s_list = [baseline, moderate, expanded]
+
+    b_colors = ['b', 'g', 'r']
+    m_colors = ['blue', 'green', 'orange', 'yellow', 'black']
+    e_colors = ['blue', 'green', 'orange', 'yellow', 'purple', 'black']
+    all_colors = [b_colors, m_colors, e_colors]
+
+    for n, df, t, c in zip(np.arange(1,4), s_list, levels, all_colors):
+        ax = plt.subplot(3, 1, n)
+        ax.plot(df/1000)
+        ax.set_title(t, weight='bold')
+        ax.set_ylabel('Cummulative installed \ncapacity, GW', weight='bold')
+        column_names = list(df.columns.values)
+        ax.legend(labels=column_names, loc='upper left', title='Offshore wind region')
+
+    line_fname = 'results/Deployment/stacked_subplots.png'
+    plt.savefig(line_fname, bbox_inches='tight')
