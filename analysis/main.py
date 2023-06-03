@@ -11,12 +11,12 @@ from datetime import datetime
 initialize_library("library")
 
 from helpers import allocations, future_allocations, target_capacity
-from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors, plot_summary, plot_deployment, plot_investments, plot_per_dollar, plot_new_gantt, plot_total_investments
+from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_colors, plot_summary, plot_deployment, plot_investments, plot_per_dollar, plot_new_gantt, plot_total_investments, plot_deployment2
 
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
 scenarios = ['Baseline-Low', 'Baseline-Mid (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-#scenarios = ['Baseline-Mid (SC)']
+#scenarios = ['Expanded-High']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 #        c = pd.concat([c, caps], axis=1)
 #        c.to_csv('results/all-capacities.csv')
 
-        capacity_2045.append((get_installed_capacity_by(df, 2046))/1000)
+        capacity_2045.append((get_installed_capacity_by(df, 2045))/1000)
 
         # Annual throughput
         res = []
@@ -172,6 +172,7 @@ writer.close()
 inv_fig = 'library/investments/total-investments.xlsx'
 plot_total_investments(inv_fig)
 plot_deployment()
+plot_deployment2()
 percent_installed = plot_summary(scenarios, capacity_2045, target_capacity)
 print(percent_installed)
 plot_per_dollar(scenarios, percent_installed, target_capacity)

@@ -418,7 +418,7 @@ def plot_investments(cap_dir, scenarios):
 def plot_per_dollar(scenarios, percent_installed, target_capacity):
     fig = plt.figure(figsize=(6, 4))
     ax1 = fig.add_subplot(111)
-    #ax2 = ax1.twinx()
+    ax2 = ax1.twinx()
     width = 0.25
 
     x_ind = np.arange(len(scenarios))
@@ -449,18 +449,18 @@ def plot_per_dollar(scenarios, percent_installed, target_capacity):
         installed_per_dollar = c/d
         per_dollar.append(installed_per_dollar)
 
-    ax1.barh(scenarios, width=per_dollar, color='#9B59B6')
+    ax1.bar(x_ind-width/2, per_dollar, width=width, color='#9B59B6')
     ax1.set_xlabel('GW of capacity installed per billion USD', weight='bold')
     ax1.set_ylabel('Installation scenario', weight='bold')
 #    ax1.set_xticks(ax1_ind)
     plot_names = scenarios
     ax1.set_yticklabels(plot_names)
-    ax1.set_xlim([0,11])
+    ax1.set_ylim([0,11])
 #    ax1.set_title('S&I port investment efficiency')
 
-    #ax2.bar(x_ind+width, per_dollar, width, color='#F1C40F')
-    #ax2.set_ylabel('Percent of target installed per million dollars invested')
-    #ax2.set_ylim([0,11])
+    ax2.bar(x_ind+width/2, percents, width=width, color='#F1C40F')
+    ax2.set_ylabel('Percent of target installed per million dollars invested')
+    ax2.set_ylim([0,100])
 
     handles = [
         Patch(facecolor=color, label=label)
