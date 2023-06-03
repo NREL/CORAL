@@ -245,17 +245,18 @@ class FloatingPipeline(BasePipeline):
             ]
 
             # Install Phases
-            config["install_phases"]["MooringSystemInstallation"] = 0
-            config["install_phases"]["MooredSubInstallation"] = ('MooringSystemInstallation', 0.5)
+            #config["install_phases"]["MooringSystemInstallation"] = 0
+            #config["install_phases"]["MooredSubInstallation"] = ('MooringSystemInstallation', 0.5)
+            config["install_phases"]["MooredSubInstallation"] = 0
 
             # Vessels
-            config.update(
-                {
-                    "MooringSystemInstallation": {
-                        "mooring_install_vessel": "_shared_pool_:example_support_vessel"
-                    }
-                }
-            )
+            #config.update(
+            #    {
+            #        "MooringSystemInstallation": {
+            #            "mooring_install_vessel": "_shared_pool_:example_support_vessel"
+            #        }
+            #    }
+            #)
 
             config.update(
                 {
