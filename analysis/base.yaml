@@ -13,9 +13,9 @@ towing_vessel_groups:
   towing_vessels: 2
   ahts_vessels: 1
   num_groups: 3
-array_cable_install_vessel: _shared_pool_:example_array_cable_lay_vessel
-export_cable_install_vessel: _shared_pool_:example_export_cable_lay_vessel
-oss_install_vessel: example_support_vessel # assume that this is towed out with a anchor handling vessel
+# array_cable_install_vessel: _shared_pool_:example_array_cable_lay_vessel
+# export_cable_install_vessel: _shared_pool_:example_export_cable_lay_vessel
+# oss_install_vessel: example_support_vessel # assume that this is towed out with a anchor handling vessel
 # Port characteristics: define in individual port YAMLs
 
 # Module Specific
