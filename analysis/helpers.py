@@ -1,9 +1,9 @@
 import datetime as dt
 
 target_capacity = {
-    'Baseline': 25,
-    'Moderate': 35,
-    'Expanded': 55
+    '25 GW': 25,
+    '35 GW': 35,
+    '55 GW': 55
 }
 
 allocations = {
@@ -16,7 +16,7 @@ allocations = {
         "port": [('Humboldt', 1)]
             },
     ## Saturate # of vessels to iterate on port constraints and wait for data on actual numbers
-    'Baseline-Mid (SC)': {
+    '25 GW - High (SC)': {
         "ahts_vessel": ('example_ahts_vessel', 3), # =9 AHTS
         "towing_vessel": ('example_towing_vessel', 3), # =18 tugs
         # "mooring_install_vessel": ('example_support_vessel', 3), # =3 AHTS
@@ -62,7 +62,7 @@ future_allocations = {
     'Baseline-Low': [
         #["port", "Humboldt", [dt.datetime(2030, 1, 1)]]
     ],
-    'Baseline-Mid (SC)': [
+    '25 GW - High (SC)': [
         ["port", "Long Beach", [dt.datetime(2031, 1, 1)]],
         #["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
         ["port", "Long Beach", [dt.datetime(2031, 1, 1)]]

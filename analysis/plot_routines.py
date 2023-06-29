@@ -187,7 +187,7 @@ def plot_gantt(df, manager, s, color_by, fname=None):
 
     plt.title(f"{s} scenario: \n{installed_capacity_46:,.3} GW of capacity installed by the end of 2045")
 
-    if s == 'Baseline-Mid (SC)':
+    if s == '25 GW - High (SC)':
         ax.legend(handles=handles, loc = 'upper right', fontsize = 80, title="S&I Port")
         ax.text(x=dt.date(2046, 6, 1), y=(0.1*num_proj), s=f"End of 2045", fontsize=30, color="#2C3E50")
 
@@ -312,7 +312,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
 
     x_ind = np.arange(len(scenarios))
 
-    target = [target_capacity[s.split('-')[0]] for s in scenarios]
+    target = [target_capacity[s.split(' -')[0]] for s in scenarios]
     ax1.plot(x_ind-(width/2), target, width, color='#2ECC71', marker='*', markersize = 12, linestyle="", zorder=0)
 
     not_installed = []
@@ -339,7 +339,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     ax1.set_xticks(x_ind)
-    plot_names = ['Baseline-Low: \n2 sites', 'Baseline-Mid (SC): \n3 sites', 'Baseline-Mid (CC): \n3 sites', 'Moderate-Low: \n4 sites', 'Moderate-Mid (SC): \n5 sites', 'Expanded-High: \n9 sites']
+    plot_names = ['Baseline-Low: \n2 sites', '25 GW - High (SC): \n3 sites', 'Baseline-Mid (CC): \n3 sites', 'Moderate-Low: \n4 sites', 'Moderate-Mid (SC): \n5 sites', 'Expanded-High: \n9 sites']
 
     #num = len(scenarios)
     if len(scenarios) > 1:
@@ -425,8 +425,8 @@ def plot_per_dollar(scenarios, percent_installed, target_capacity):
     ax1_ind = np.arange(0, 11, 2)
     #ax2_ind = np.arange(0, 11, 1)
     width = 0.25
-
-    target = [target_capacity[s.split('-')[0]] for s in scenarios]
+    
+    target = [target_capacity[s.split(' -')[0]] for s in scenarios]
 
     percents = []
     for s in percent_installed:
@@ -543,7 +543,7 @@ def plot_new_gantt(df, manager, s, color_by, inv_df, fname=None):
 
     ax1.set_title(f"{s} scenario: {invested:,.3} billion USD \ninvested and {installed_capacity_46:,.3} GW installed by the end of 2045", weight='bold')
 
-    if s == 'Baseline-Mid (SC)':
+    if s == '25 GW - High (SC)':
         ax1.legend(handles=handles, loc = 'upper right', title="S&I Port")
         ax1.text(x=dt.date(2046, 6, 1), y=(0.1*num_proj), s=f"End of 2045", color="#2C3E50")
 
