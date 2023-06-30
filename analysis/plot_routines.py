@@ -187,9 +187,9 @@ def plot_gantt(df, manager, s, color_by, fname=None):
 
     plt.title(f"{s} scenario: \n{installed_capacity_46:,.3} GW of capacity installed by the end of 2045")
 
-    if s == '25 GW - High (SC)':
-        ax.legend(handles=handles, loc = 'upper right', fontsize = 80, title="S&I Port")
-        ax.text(x=dt.date(2046, 6, 1), y=(0.1*num_proj), s=f"End of 2045", fontsize=30, color="#2C3E50")
+    # if s == '25 GW - High (SC)':
+    ax.legend(handles=handles, loc = 'upper right', fontsize = 80, title="S&I Port")
+    ax.text(x=dt.date(2046, 6, 1), y=(0.1*num_proj), s=f"End of 2045", fontsize=30, color="#2C3E50")
 
     if fname is not None:
         myformat(ax)
@@ -339,7 +339,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     ax1.set_xticks(x_ind)
-    plot_names = ['Baseline-Low: \n2 sites', '25 GW - High (SC): \n3 sites', 'Baseline-Mid (CC): \n3 sites', 'Moderate-Low: \n4 sites', 'Moderate-Mid (SC): \n5 sites', 'Expanded-High: \n9 sites']
+    plot_names = ['25 GW - Low \n(2 S&I sites)', '25 GW - High (SC) \n(4 S&I sites)', '25 GW - High (CC) \n(3 S&I sites)', '35 GW \n(6 S&I sites)', '55 GW \n(9 S&I  sites)']
 
     #num = len(scenarios)
     if len(scenarios) > 1:
@@ -543,9 +543,9 @@ def plot_new_gantt(df, manager, s, color_by, inv_df, fname=None):
 
     ax1.set_title(f"{s} scenario: {invested:,.3} billion USD \ninvested and {installed_capacity_46:,.3} GW installed by the end of 2045", weight='bold')
 
-    if s == '25 GW - High (SC)':
-        ax1.legend(handles=handles, loc = 'upper right', title="S&I Port")
-        ax1.text(x=dt.date(2046, 6, 1), y=(0.1*num_proj), s=f"End of 2045", color="#2C3E50")
+    # if s == '25 GW - High (SC)':
+    ax1.legend(handles=handles, loc = 'upper right', title="S&I Port")
+    ax1.text(x=dt.date(2046, 6, 1), y=(0.1*num_proj), s=f"End of 2045", color="#2C3E50")
 
     inv_df[s].plot.line(ax=ax2, color='r')
     ax2.axvline(x=2046, lw=0.5, color='#2C3E50')

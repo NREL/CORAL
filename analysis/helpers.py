@@ -7,7 +7,7 @@ target_capacity = {
 }
 
 allocations = {
-    'Baseline-Low': {
+    '25 GW - Low': {
         "ahts_vessel": ('example_ahts_vessel', 1), # =3 AHTS (1 projects at a time, 3 groups per project, 1 AHTS per group)
         "towing_vessel": ('example_towing_vessel', 1), # =6 tugs (1 projects at a time, 3 groups per project, 2 tugs per group)
         # "mooring_install_vessel": ('example_support_vessel', 1), # =1 AHTS (1 projects at a time, 1 per project)
@@ -24,7 +24,7 @@ allocations = {
         # "export_cable_install_vessel": ("example_export_cable_lay_vessel", 3), # =3 CLV (export)
         "port": [('Long Beach', 0), ('Humboldt', 1)]
             },
-    'Baseline-Mid (CC)': {
+    '25 GW - High (CC)': {
         "ahts_vessel": ('example_ahts_vessel', 2), # =6 AHTS
         "towing_vessel": ('example_towing_vessel', 2), # =12 tugs
         # "mooring_install_vessel": ('example_support_vessel', 2), # =2 AHTS
@@ -32,15 +32,15 @@ allocations = {
         # "export_cable_install_vessel": ("example_export_cable_lay_vessel",2), # =2 CLV (export)
         "port": [('Port of San Luis', 0), ('Humboldt', 1)]
             },
-    'Moderate-Low': {
-        "ahts_vessel": ('example_ahts_vessel', 3), # =9 AHTS
-        "towing_vessel": ('example_towing_vessel', 3), # =18 tugs
-        # "mooring_install_vessel": ('example_support_vessel', 3), # =3 AHTS
-        # "array_cable_install_vessel": ('example_array_cable_lay_vessel', 3), # =3 CLV (array)
-        # "export_cable_install_vessel": ("example_export_cable_lay_vessel",3), # =3 CLV (export)
-        "port": [('Humboldt', 1), ('Coos Bay', 0)]
-            },
-    'Moderate-Mid (SC)': {
+    # 'Moderate-Low': {
+        # "ahts_vessel": ('example_ahts_vessel', 3), # =9 AHTS
+        # "towing_vessel": ('example_towing_vessel', 3), # =18 tugs
+        # # "mooring_install_vessel": ('example_support_vessel', 3), # =3 AHTS
+        # # "array_cable_install_vessel": ('example_array_cable_lay_vessel', 3), # =3 CLV (array)
+        # # "export_cable_install_vessel": ("example_export_cable_lay_vessel",3), # =3 CLV (export)
+        # "port": [('Humboldt', 1), ('Coos Bay', 0)]
+            # },
+    '35 GW': {
         "ahts_vessel": ('example_ahts_vessel', 4), # =12 AHTS
         "towing_vessel": ('example_towing_vessel', 4), # =24 tugs
         # "mooring_install_vessel": ('example_support_vessel', 4), # =4 AHTS
@@ -48,7 +48,7 @@ allocations = {
         # "export_cable_install_vessel": ("example_export_cable_lay_vessel",4), # =4 CLV (export)
         "port": [('Long Beach', 0), ('Humboldt', 1), ('Coos Bay', 0)]
             },
-    'Expanded-High': {
+    '55 GW': {
         "ahts_vessel": ('example_ahts_vessel', 8), # =24 AHTS
         "towing_vessel": ('example_towing_vessel', 8), # =48 tugs
         # "mooring_install_vessel": ('example_support_vessel', 8), # =8 AHTS
@@ -59,32 +59,32 @@ allocations = {
 }
 
 future_allocations = {
-    'Baseline-Low': [
-        #["port", "Humboldt", [dt.datetime(2030, 1, 1)]]
+    '25 GW - Low': [
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]]
     ],
     '25 GW - High (SC)': [
         ["port", "Long Beach", [dt.datetime(2031, 1, 1)]],
-        #["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
         ["port", "Long Beach", [dt.datetime(2031, 1, 1)]]
     ],
-    'Baseline-Mid (CC)': [
+    '25 GW - High (CC)': [
         ["port", "Port of San Luis", [dt.datetime(2037, 1, 1)]],
-        #["port", "Humboldt", [dt.datetime(2030, 1, 1)]]
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]]
     ],
-    'Moderate-Low':[
-        ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
-        #["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
-        ["port", "Coos Bay", [dt.datetime(2038, 1, 1)]]
-    ],
-    'Moderate-Mid (SC)':[
+    # 'Moderate-Low':[
+        # ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
+        # ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
+        # ["port", "Coos Bay", [dt.datetime(2038, 1, 1)]]
+    # ],
+    '35 GW':[
         ["port", "Long Beach", [dt.datetime(2031, 1, 1)]],
         ["port", "Long Beach", [dt.datetime(2031, 1, 1)]],
         ["port", "Coos Bay", [dt.datetime(2031, 1, 1)]],
-        #["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
         ["port", "Coos Bay", [dt.datetime(2038, 1, 1)]]
     ],
-    'Expanded-High':[
-        #["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
+    '55 GW':[
+        ["port", "Humboldt", [dt.datetime(2030, 1, 1)]],
         ["port", "Long Beach", [dt.datetime(2031, 1, 1)]],
         ["port", "Long Beach", [dt.datetime(2031, 1, 1)]], # Add 2nd line
         # ["port", "Long Beach", [dt.datetime(2035, 1, 1)]], # Add 3rd line
