@@ -312,7 +312,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
 
     x_ind = np.arange(len(scenarios))
 
-    target = [target_capacity[s.split(' -')[0]] for s in scenarios]
+    target = [int(s.split(' ')[0]) for s in scenarios]
     ax1.plot(x_ind-(width/2), target, width, color='#2ECC71', marker='*', markersize = 12, linestyle="", zorder=0)
 
     not_installed = []
@@ -339,7 +339,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     ax1.set_xticks(x_ind)
-    plot_names = ['25 GW - Low \n(2 S&I sites)', '25 GW - High (SC) \n(4 S&I sites)', '25 GW - High (CC) \n(3 S&I sites)', '35 GW \n(6 S&I sites)', '55 GW \n(9 S&I  sites)']
+    plot_names = ['25 GW (SC) \n(4 S&I sites)', '25 GW (CC) \n(3 S&I sites)', '35 GW \n(6 S&I sites)', '55 GW \n(9 S&I  sites)']
 
     #num = len(scenarios)
     if len(scenarios) > 1:
@@ -356,7 +356,7 @@ def plot_summary(scenarios, capacity_list, target_capacity):
     return perc_installed_dict
 
 def plot_deployment():
-    levels = ['Baseline', 'Moderate', 'Expanded']
+    levels = ['25 GW', '35 GW', '55 GW']
 
     schedules = 'library/pipeline/deployment-schedules.xlsx'
 
@@ -364,13 +364,13 @@ def plot_deployment():
         df = pd.read_excel(schedules, sheet_name = s, index_col='Year')
         df = df/1000
 
-        if s=='Baseline':
+        if s=='25 GW':
             regions = df[['Central CA', 'Northern CA']].copy()
             total = regions.sum(axis=1)[2045]
-        elif s=='Moderate':
+        elif s=='35 GW':
             regions = df[['Central CA', 'Northern CA', 'Central OR', 'Southern OR']].copy()
             total = regions.sum(axis=1)[2045]
-        elif s =='Expanded':
+        elif s =='55 GW':
             regions = df[['Central CA', 'Northern CA', 'Central OR', 'Southern OR', 'Southern WA']].copy()
             total = regions.sum(axis=1)[2045]
 
@@ -378,8 +378,8 @@ def plot_deployment():
         ax2 = ax.twinx()
 
         ## Stacked area charts
-        ax = regions.plot.area()
-        plt.title('Deployment for the '+ s +' Scenario: ' + str(int(total)) + ' GW')
+        ax = regions.plot.area(alpha=0.75)
+        plt.title('Target Deployment for the '+ s +' Scenario' )
         ax.set_ylabel('Cumulative installed capacity, GW')
         ax.legend(loc = 'upper left')
 
@@ -388,7 +388,7 @@ def plot_deployment():
 
         ## Simple line graphs
         ax2 = regions.plot.line()
-        plt.title('Deployment for the '+ s +' Scenario: ' + str(int(total)) + ' GW')
+        plt.title('Target Deployment for the '+ s +' Scenario' )
         ax2.set_ylim([0,25])
         ax2.set_ylabel('Cumulative installed capacity, GW')
         ax2.legend(loc = 'upper left')
@@ -426,7 +426,8 @@ def plot_per_dollar(scenarios, percent_installed, target_capacity):
     #ax2_ind = np.arange(0, 11, 1)
     width = 0.25
     
-    target = [target_capacity[s.split(' -')[0]] for s in scenarios]
+    # target = [target_capacity[s.split(' -')[0]] for s in scenarios]
+    target = [int(s.split(' ')[0]) for s in scenarios]
 
     percents = []
     for s in percent_installed:
@@ -530,7 +531,7 @@ def plot_new_gantt(df, manager, s, color_by, inv_df, fname=None):
     ax1.set_xlim(dt.date(2027, 1, 1) + dt.timedelta(days=30), dt.date(2061, 1, 1) + dt.timedelta(days=30))
     num_proj = len(df['Date Finished'])
 
-    ax1.axvline(dt.date(2046, 2, 1), lw=0.5, color="#2C3E50", zorder=6)
+    # ax1.axvline(dt.date(2046, 2, 1), lw=0.5, color="#2C3E50", zorder=6)
     installed_capacity_46 = get_installed_capacity_by(df, 2046)/1000
 
     for line in counts:
@@ -541,14 +542,14 @@ def plot_new_gantt(df, manager, s, color_by, inv_df, fname=None):
     inv_df.set_index("Year", inplace=True)
     invested = inv_df.at[2045, s]
 
-    ax1.set_title(f"{s} scenario: {invested:,.3} billion USD \ninvested and {installed_capacity_46:,.3} GW installed by the end of 2045", weight='bold')
+    ax1.set_title(f"{s} scenario: {invested:,.2} billion USD \ninvested and {installed_capacity_46:,.3} GW installed by the end of 2045", weight='bold')
 
     # if s == '25 GW - High (SC)':
-    ax1.legend(handles=handles, loc = 'upper right', title="S&I Port")
-    ax1.text(x=dt.date(2046, 6, 1), y=(0.1*num_proj), s=f"End of 2045", color="#2C3E50")
+    ax1.legend(handles=handles, title="S&I Port", bbox_to_anchor=[1.05, 1], loc='upper left')
+    # ax1.text(x=dt.date(2046, 6, 1), y=(0.1*num_proj), s=f"End of 2045", color="#2C3E50")
 
     inv_df[s].plot.line(ax=ax2, color='r')
-    ax2.axvline(x=2046, lw=0.5, color='#2C3E50')
+    # ax2.axvline(x=2046, lw=0.5, color='#2C3E50')
     ax2.set_xlim(2027, 2061)
     ax2.set_ylim(0, 11)
     ax2.set_ylabel("Investment \n(million USD)", weight='bold', rotation=90)

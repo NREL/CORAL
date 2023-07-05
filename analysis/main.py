@@ -16,7 +16,7 @@ from plot_routines import plot_gantt, plot_throughput, plot_gantt_nt, assign_col
 # Configure scenarios and keep_inputs
 projects = "library/pipeline/wc-pipeline.xlsx"
 # scenarios = ['Baseline-Low', '25 GW - High (SC)', 'Baseline-Mid (CC)', 'Moderate-Low', 'Moderate-Mid (SC)', 'Expanded-High']
-scenarios = ['25 GW - Low', '25 GW - High (SC)', '25 GW - High (CC)', '35 GW', '55 GW']
+scenarios = ['25 GW (SC)', '25 GW (CC)', '35 GW', '55 GW']
 base = "base.yaml"
 library_path = "library"
 weather_path = "library/weather/humboldt_weather_2010_2018.csv"
@@ -172,7 +172,7 @@ writer.close()
 inv_fig = 'library/investments/total-investments.xlsx'
 plot_total_investments(inv_fig)
 plot_deployment()
-plot_deployment2()
+# plot_deployment2()
 percent_installed = plot_summary(scenarios, capacity_2045, target_capacity)
 print(percent_installed)
 plot_per_dollar(scenarios, percent_installed, target_capacity)
