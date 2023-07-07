@@ -542,7 +542,7 @@ def plot_new_gantt(df, manager, s, color_by, inv_df, fname=None):
     inv_df.set_index("Year", inplace=True)
     invested = inv_df.at[2045, s]
 
-    ax1.set_title(f"{s} scenario: {invested:,.2} billion USD \ninvested and {installed_capacity_46:,.3} GW installed by the end of 2045", weight='bold')
+    ax1.set_title(f"{s} scenario: {invested:,.1f} billion USD \ninvested and {installed_capacity_46:,.3} GW installed by the end of 2045", weight='bold')
 
     # if s == '25 GW - High (SC)':
     ax1.legend(handles=handles, title="S&I Port", bbox_to_anchor=[1.05, 1], loc='upper left')
