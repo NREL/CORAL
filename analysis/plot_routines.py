@@ -575,13 +575,13 @@ def plot_total_investments(file_name):
     fig.savefig('results/Summary Plots/total-investments.png', bbox_inches='tight', dpi=300)
 
 def plot_deployment2():
-    levels = ['Baseline scenario', 'Moderate scenario', 'Expanded scenario']
+    levels = ['25 GW target deployment', '35 GW target deployment', '55 GW target deployment']
 
     schedules = 'library/pipeline/deployment-schedules.xlsx'
 
-    b_df = pd.read_excel(schedules, sheet_name = 'Baseline', index_col='Year')
-    m_df = pd.read_excel(schedules, sheet_name = 'Moderate', index_col='Year')
-    e_df = pd.read_excel(schedules, sheet_name = 'Expanded', index_col='Year')
+    b_df = pd.read_excel(schedules, sheet_name = '25 GW', index_col='Year')
+    m_df = pd.read_excel(schedules, sheet_name = '35 GW', index_col='Year')
+    e_df = pd.read_excel(schedules, sheet_name = '55 GW', index_col='Year')
 
     fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharey=True, figsize=(10,12))
 
@@ -599,7 +599,7 @@ def plot_deployment2():
         ax = plt.subplot(3, 1, n)
         ax.plot(df/1000)
         ax.set_title(t, weight='bold')
-        ax.set_ylabel('Cummulative installed \ncapacity, GW', weight='bold')
+        ax.set_ylabel('Cumulative installed \ncapacity, GW', weight='bold')
         column_names = list(df.columns.values)
         ax.legend(labels=column_names, loc='upper left', title='Offshore wind region')
 
