@@ -55,7 +55,7 @@ class GlobalManager:
         allocations : dict
             Number of each library item that exists in the shared environment.
         """
-
+        
         self._logs = []
         self._projects = {}
         self._counter = Counter()
@@ -81,7 +81,7 @@ class GlobalManager:
 
             new = deepcopy(log)
             if isinstance(self._start, dt.datetime):
-                for k in ["Initialized", "Started", "Finished"]:
+                for k in ["Initialized", "Started", "TurbineStart", "FoundationFinished", "Finished"]:
                     idx = int(np.ceil(log[k]))
                     new[f"Date {k}"] = self._start + dt.timedelta(hours=idx)
 
@@ -178,19 +178,41 @@ class GlobalManager:
         log = {"name": name, "Initialized": self.env.now}
 
         resources = self._get_shared_resources(config)
-
         request = MultiRequest(self.env, dict(resources), name)
+        
         resource_data = self.library.request(request)
         yield request.trigger
 
         log["Started"] = self.env.now
+        projectstart = self.env.now
         for key, data in resource_data.items():
             config[key] = data
 
         project = self._run_project(config)
+
         yield self.env.timeout(project.project_time)
         log["Finished"] = self.env.now
+        projectend = self.env.now
 
+        #Pull foundation finished time, add it to log
+        df2 = pd.DataFrame(project.actions)
+        if "MonopileInstallation" in df2["phase"].values:
+            foundation_time = (df2[df2["phase"] == "MonopileInstallation"]["time"].iloc[-1])+projectstart
+        elif "JacketInstallation" in df2["phase"].values:
+            foundation_time = (df2[df2["phase_name"] == "JacketInstallation"]["time"].iloc[-1])+projectstart
+        else:
+            foundation_time = projectend
+
+        log["FoundationFinished"] = foundation_time
+
+        #Pull the start of turbine installation, add it to log
+        if "TurbineInstallation" in df2["phase"].values:
+            turbine_start = (df2[df2["phase"] == "TurbineInstallation"]["time"].iloc[0])+projectstart
+        else:
+            turbine_start = projectstart
+
+        log["TurbineStart"] = turbine_start
+        
         self._projects[name] = project
         self._logs.append(log)
         self.library.release(request)
@@ -251,12 +273,10 @@ class GlobalManager:
             dates = [dates]
 
         for date in dates:
-
             if isinstance(date, dt.datetime):
                 delay = (date - self._start).days * 24
-
             else:
-                delay = date - self._start
+                delay = (date - self._start.date()).days
 
             if delay < 0:
                 raise ValueError(
