@@ -47,8 +47,6 @@ for fname in glob.glob(path):
 
 slide = add_text_slide(prs, 'Summary Plots', ["Plots comparing runs"])
 
-df_cum = installed_cap(prs,dfs,desc)
-compare_installed_cap(prs,dfs,desc)
 
 
 savename = os.path.join(results_fp, '%s_results.pptx' % filename)

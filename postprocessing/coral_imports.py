@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0, '/Users/sbredenk/Repos/ORBIT_natl_gaps')
-sys.path.insert(0, '/Users/sbredenk/Repos/CORAL_dev/CORAL')
+sys.path.insert(0, '/Users/sbredenk/Repos/CORAL')
 from CORAL import SharedLibrary, GlobalManager, Pipeline
 import pandas as pd
 import matplotlib.pyplot as plt

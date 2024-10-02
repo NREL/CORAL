@@ -11,6 +11,8 @@ from collections import Counter
 import numpy as np
 import pandas as pd
 from ORBIT import ProjectManager
+from ORBIT.phases.install import MonopileInstallation, TurbineInstallation
+from ORBIT.phases.design import MonopileDesign
 from simpy import Event, Environment
 from benedict import benedict
 
@@ -177,43 +179,66 @@ class GlobalManager:
         yield self.env.timeout(idx)
         log = {"name": name, "Initialized": self.env.now}
 
-        resources = self._get_shared_resources(config)
-        request = MultiRequest(self.env, dict(resources), name)
-        
+        foundation_resources, turbine_resources = self._get_shared_resources(config)
+
+        # Foundation Phase
+        request = MultiRequest(self.env, dict(foundation_resources), name)
+
         resource_data = self.library.request(request)
         yield request.trigger
 
         log["Started"] = self.env.now
         projectstart = self.env.now
+
+        foundation_config = config.copy()
         for key, data in resource_data.items():
-            config[key] = data
+            foundation_config[key] = data
+        for key, data in foundation_config.items():
+            if type(data) == str:
+                if "_shared_pool_" in data:
+                    target = data.split(":")[1]
+                    foundation_config[key] = target
+        foundation_phase = self._run_foundation(foundation_config)
 
-        project = self._run_project(config)
+        yield self.env.timeout(foundation_phase.total_phase_time)
+        log["FoundationFinished"] = self.env.now
 
-        yield self.env.timeout(project.project_time)
+        self.library.release(request)
+        # Turbine Phase
+        request = MultiRequest(self.env, dict(turbine_resources), name)
+
+        resource_data = self.library.request(request)
+
+        yield request.trigger
+
+        log["TurbineStart"] = self.env.now
+        projectstart = self.env.now
+        turbine_config = config.copy()
+        for key, data in resource_data.items():
+            turbine_config[key] = data
+        for key, data in turbine_config.items():
+            if type(data) == str:
+                if "_shared_pool_" in data:
+                    target = data.split(":")[1]
+                    turbine_config[key] = target
+        turbine_phase = self._run_turbine(turbine_config)
+
+        yield self.env.timeout(turbine_phase.total_phase_time)
+
         log["Finished"] = self.env.now
         projectend = self.env.now
-
         #Pull foundation finished time, add it to log
-        df2 = pd.DataFrame(project.actions)
-        if "MonopileInstallation" in df2["phase"].values:
-            foundation_time = (df2[df2["phase"] == "MonopileInstallation"]["time"].iloc[-1])+projectstart
-        elif "JacketInstallation" in df2["phase"].values:
-            foundation_time = (df2[df2["phase_name"] == "JacketInstallation"]["time"].iloc[-1])+projectstart
-        else:
-            foundation_time = projectend
+        # df2 = pd.DataFrame(project.actions)
+        # if "MonopileInstallation" in df2["phase"].values:
+        #     foundation_time = (df2[df2["phase"] == "MonopileInstallation"]["time"].iloc[-1])+projectstart
+        # elif "JacketInstallation" in df2["phase"].values:
+        #     foundation_time = (df2[df2["phase_name"] == "JacketInstallation"]["time"].iloc[-1])+projectstart
+        # else:
+        #     foundation_time = projectend
 
-        log["FoundationFinished"] = foundation_time
-
-        #Pull the start of turbine installation, add it to log
-        if "TurbineInstallation" in df2["phase"].values:
-            turbine_start = (df2[df2["phase"] == "TurbineInstallation"]["time"].iloc[0])+projectstart
-        else:
-            turbine_start = projectstart
-
-        log["TurbineStart"] = turbine_start
+        # log["FoundationFinished"] = foundation_time
         
-        self._projects[name] = project
+        # self._projects[name] = project
         self._logs.append(log)
         self.library.release(request)
 
@@ -244,6 +269,8 @@ class GlobalManager:
         """
 
         resources = []
+        foundation_resources = []
+        turbine_resources = []
         for k, v in config.flatten("//").items():
             try:
                 if "_shared_pool_" in v:
@@ -252,8 +279,18 @@ class GlobalManager:
 
             except TypeError:
                 pass
+        
+        for k,v in resources:
+            if k == 'port':
+                foundation_resources.append((k,v))
+            if 'Installation' in k:
+                foundation_resources.append((k,v))
+            else:
+                turbine_resources.append((k,v))
+        
+        return foundation_resources, turbine_resources
 
-        return resources
+        # return resources
 
     def add_future_resources(self, category, name, dates):
         """
@@ -316,8 +353,43 @@ class GlobalManager:
         weather = self._get_current_weather()
         project = ProjectManager(config, weather=weather)
         project.run()
-
+        
         return project
+    
+    def _run_foundation(self, config):
+        """
+        Run foundation phase of configured ORBIT project.
+
+        Parameters
+        ----------
+        config : dict
+            ORBIT foundation configuration.
+        """ 
+
+        weather = self._get_current_weather()
+        foundation_design = MonopileDesign(config)
+        foundation_design.run()
+        config.update(foundation_design.design_result)
+        foundation_phase = MonopileInstallation(config, weather=weather)
+        foundation_phase.run()
+        
+        return foundation_phase
+    
+    def _run_turbine(self, config):
+        """
+        Run foundation phase of configured ORBIT project.
+
+        Parameters
+        ----------
+        config : dict
+            ORBIT foundation configuration.
+        """ 
+
+        weather = self._get_current_weather()
+        turbine_phase = TurbineInstallation(config, weather=weather)
+        turbine_phase.run()
+        
+        return turbine_phase
 
     @staticmethod
     def _append_request_timing(log, resources, requests):

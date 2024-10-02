@@ -14,7 +14,7 @@ def run_manager(pipeline, allocations, library, weather=None, future_resources=N
     if future_resources != None: 
         for i in future_resources:
             manager.add_future_resources(i[0], i[1], i[2])
-        
+
     manager.run()
 
     # Format DataFrame for figure building
