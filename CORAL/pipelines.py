@@ -267,6 +267,15 @@ class Pipeline:
                     }
                 )
             
+            config["ahts_vessel"] = "_shared_pool_:example_ahts_vessel"
+            config["towing_vessel"] = "_shared_pool_:example_towing_vessel"
+            config["towing_vessel_groups"] = {
+                "towing_vessels": 2,
+                "station_keeping_vessels": 2,
+            }
+            config["substructure"] = {
+                "unit_cost": 0, # placeholder, needed for ORBIT but irrelevant for CORAL
+            }
 
             # Vessels
             config.update(
@@ -296,6 +305,9 @@ class Pipeline:
 
             # Install Phases
             config["install_phases"]["MooredSubInstallation"] = 0
+
+            config["ahts_vessel"] = "_shared_pool_:example_ahts_vessel"
+            config["towing_vessel"] = "_shared_pool_:example_towing_vessel"
 
             # Vessels
             config.update(

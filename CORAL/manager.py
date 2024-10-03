@@ -11,8 +11,8 @@ from collections import Counter
 import numpy as np
 import pandas as pd
 from ORBIT import ProjectManager
-from ORBIT.phases.install import MonopileInstallation, TurbineInstallation
-from ORBIT.phases.design import MonopileDesign
+from ORBIT.phases.install import MonopileInstallation, JacketInstallation, GravityBasedInstallation, MooredSubInstallation, TurbineInstallation
+from ORBIT.phases.design import MonopileDesign, SemiSubmersibleDesign
 from simpy import Event, Environment
 from benedict import benedict
 
@@ -178,13 +178,17 @@ class GlobalManager:
         idx = self._get_start_idx(start)
         yield self.env.timeout(idx)
         log = {"name": name, "Initialized": self.env.now}
-
+   
         foundation_resources, turbine_resources = self._get_shared_resources(config)
+
+        foundation_type = list(config["install_phases"].keys())[0]
+
 
         # Foundation Phase
         request = MultiRequest(self.env, dict(foundation_resources), name)
 
         resource_data = self.library.request(request)
+
         yield request.trigger
 
         log["Started"] = self.env.now
@@ -198,45 +202,38 @@ class GlobalManager:
                 if "_shared_pool_" in data:
                     target = data.split(":")[1]
                     foundation_config[key] = target
-        foundation_phase = self._run_foundation(foundation_config)
+
+        foundation_phase = self._run_foundation(foundation_config, foundation_type)
 
         yield self.env.timeout(foundation_phase.total_phase_time)
         log["FoundationFinished"] = self.env.now
 
         self.library.release(request)
         # Turbine Phase
-        request = MultiRequest(self.env, dict(turbine_resources), name)
+        if foundation_type == "MonopileInstallation" or foundation_type == "JacketInstallation":
+            request = MultiRequest(self.env, dict(turbine_resources), name)
 
-        resource_data = self.library.request(request)
+            resource_data = self.library.request(request)
 
-        yield request.trigger
+            yield request.trigger
+            log["TurbineStart"] = self.env.now
+            projectstart = self.env.now
+            turbine_config = config.copy()
+            for key, data in resource_data.items():
+                turbine_config[key] = data
+            for key, data in turbine_config.items():
+                if type(data) == str:
+                    if "_shared_pool_" in data:
+                        target = data.split(":")[1]
+                        turbine_config[key] = target
+            turbine_phase = self._run_turbine(turbine_config)
 
-        log["TurbineStart"] = self.env.now
-        projectstart = self.env.now
-        turbine_config = config.copy()
-        for key, data in resource_data.items():
-            turbine_config[key] = data
-        for key, data in turbine_config.items():
-            if type(data) == str:
-                if "_shared_pool_" in data:
-                    target = data.split(":")[1]
-                    turbine_config[key] = target
-        turbine_phase = self._run_turbine(turbine_config)
-
-        yield self.env.timeout(turbine_phase.total_phase_time)
+            yield self.env.timeout(turbine_phase.total_phase_time)
+        else:
+            log["TurbineStart"] = self.env.now
 
         log["Finished"] = self.env.now
         projectend = self.env.now
-        #Pull foundation finished time, add it to log
-        # df2 = pd.DataFrame(project.actions)
-        # if "MonopileInstallation" in df2["phase"].values:
-        #     foundation_time = (df2[df2["phase"] == "MonopileInstallation"]["time"].iloc[-1])+projectstart
-        # elif "JacketInstallation" in df2["phase"].values:
-        #     foundation_time = (df2[df2["phase_name"] == "JacketInstallation"]["time"].iloc[-1])+projectstart
-        # else:
-        #     foundation_time = projectend
-
-        # log["FoundationFinished"] = foundation_time
         
         # self._projects[name] = project
         self._logs.append(log)
@@ -356,7 +353,7 @@ class GlobalManager:
         
         return project
     
-    def _run_foundation(self, config):
+    def _run_foundation(self, config, foundation_type):
         """
         Run foundation phase of configured ORBIT project.
 
@@ -367,10 +364,26 @@ class GlobalManager:
         """ 
 
         weather = self._get_current_weather()
-        foundation_design = MonopileDesign(config)
-        foundation_design.run()
-        config.update(foundation_design.design_result)
-        foundation_phase = MonopileInstallation(config, weather=weather)
+        if foundation_type == "MonopileInstallation":
+            foundation_design = MonopileDesign(config)
+            foundation_design.run()
+            config.update(foundation_design.design_result)
+            foundation_phase = MonopileInstallation(config, weather=weather)
+        elif foundation_type == "JacketInstallation":
+            foundation_design = MonopileDesign(config)
+            foundation_design.run()
+            config.update(foundation_design.design_result)
+            foundation_phase = JacketInstallation(config, weather=weather)
+        elif foundation_type == "GravityBasedInstallation":
+            foundation_design = MonopileDesign(config)
+            foundation_design.run()
+            config.update(foundation_design.design_result)
+            foundation_phase = GravityBasedInstallation(config, weather=weather)
+        else:
+            foundation_design = SemiSubmersibleDesign(config)
+            foundation_design.run()
+            config.update(foundation_design.design_result)
+            foundation_phase = MooredSubInstallation(config, weather=weather)
         foundation_phase.run()
         
         return foundation_phase
